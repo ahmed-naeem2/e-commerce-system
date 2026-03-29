@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Pc\\source\\repos\\e-commerce system\\e-commerce system.csproj": {}
+    "C:\\Users\\Pc\\source\\repos\\E-commerce system Project\\E-commerce system\\e-commerce system.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Pc\\source\\repos\\e-commerce system\\e-commerce system.csproj": {
+    "C:\\Users\\Pc\\source\\repos\\E-commerce system Project\\E-commerce system\\e-commerce system.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pc\\source\\repos\\e-commerce system\\e-commerce system.csproj",
+        "projectUniqueName": "C:\\Users\\Pc\\source\\repos\\E-commerce system Project\\E-commerce system\\e-commerce system.csproj",
         "projectName": "e-commerce system",
-        "projectPath": "C:\\Users\\Pc\\source\\repos\\e-commerce system\\e-commerce system.csproj",
+        "projectPath": "C:\\Users\\Pc\\source\\repos\\E-commerce system Project\\E-commerce system\\e-commerce system.csproj",
         "packagesPath": "C:\\Users\\Pc\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Pc\\source\\repos\\e-commerce system\\obj\\",
+        "outputPath": "C:\\Users\\Pc\\source\\repos\\E-commerce system Project\\E-commerce system\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -51,6 +51,28 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Identity": {
+              "target": "Package",
+              "version": "[2.3.9, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
