@@ -18,9 +18,9 @@ namespace e_commerce_system.Models
 
 		public string PaymentMethod { get; set; }
 
-		public DateTime CreatedAt { get; set; }
+		public DateTime CreatedAt { get; set; }=DateTime.Now;
 
-		public DateTime UpdateAt { get; set; } 
+		public DateTime UpdatedAt { get; set; } 
 
 		public OrderStatus Status { get; set; }=OrderStatus.PendingPayment;
 

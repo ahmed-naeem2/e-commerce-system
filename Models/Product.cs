@@ -12,7 +12,9 @@
 
 		public Categorie? Categorie { get; set; }	
 
-		public DateTime CreatedAt { get; set; }
+		public DateTime CreatedAt { get; set; }= DateTime.Now;
+
+		public bool IsActive { get; set; } = true;
 
 		public DateTime UpdatedAt { get; set; }
 

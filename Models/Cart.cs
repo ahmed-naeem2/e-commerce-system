@@ -18,7 +18,9 @@ namespace e_commerce_system.Models
 
 		public string? SessionId { get; set; }
 
-		public DateTime UpdateAt { get; set; }
+		public DateTime UpdatedAt { get; set; }
+
+		public ICollection<CartItem>Items { get; set; }=new List<CartItem>();
 
 	
 

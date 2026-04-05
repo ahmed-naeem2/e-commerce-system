@@ -3,7 +3,7 @@
 	public class CartItem
 	{
 
-		public Guid Id { get; set; }
+		public Guid ID { get; set; }
 
 		public Guid ProductId { get; set; }
 	
@@ -16,7 +16,7 @@
 
 		public int Quantity { get; set; } = 1;
 
-		public DateTime CreatedAt { get; set; }
+		public DateTime CreatedAt { get; set; } = DateTime.Now;
 
 		public decimal UnitPrice { get; set; }
 
