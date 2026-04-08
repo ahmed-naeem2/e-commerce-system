@@ -1,4 +1,5 @@
-﻿using e_commerce_system.Models;
+﻿using e_commerce_system.Enum;
+using e_commerce_system.Models;
 using e_commerce_system.Models.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -8,21 +9,21 @@ namespace e_commerce_system.Context
 	public class MainAppDbContet:IdentityDbContext<User,Role,Guid>
 	{
 
-	public 	DbSet<Product> products { get; set; }
+	public 	DbSet<Product> Products { get; set; }
 
-		public DbSet<Order>orders {  get; set; }
+		public DbSet<Order>Orders {  get; set; }
 
 	
 
-		public DbSet<Cart> carts { get; set; }
+		public DbSet<Cart> Carts { get; set; }
 
 		public DbSet<CartItem> cartItems { get; set; }
 
-		public DbSet <OrderItem> orderItems { get; set; }
+		public DbSet <OrderItem> OrderItems { get; set; }
 
 		public DbSet<ProductImage>ProductImages { get; set; }
 
-		public DbSet<Categorie> categories {  get; set; }
+		public DbSet<Categorie> Categories {  get; set; }
 
 		public MainAppDbContet() { }
 		public MainAppDbContet(DbContextOptions<MainAppDbContet>options):base(options) { }
@@ -35,7 +36,7 @@ namespace e_commerce_system.Context
 
 			builder.Entity<User>(entity =>
 			{
-				entity.HasKey(u=>u.Id);
+				
 
 				entity.HasIndex(u=>u.PhoneNumber)
 				.IsUnique();
@@ -53,8 +54,7 @@ namespace e_commerce_system.Context
 
 				.IsRequired();
 
-				entity.HasIndex(u=>u.UserName)
-				.IsUnique();	
+			
 				
 
 			});
@@ -86,7 +86,7 @@ namespace e_commerce_system.Context
 				entity.ToTable(t => t.HasCheckConstraint(
 					"CK_Order_Status",
 					"[Status] IN (N'PendingPayment',N'Completed',N'Cancelled',N'Paid')"
-					)).Property(t=>t.Status).HasDefaultValue("PendingPayment");
+					)).Property(t=>t.Status).HasDefaultValue(OrderStatus.PendingPayment);
 
 				entity.HasOne(o=>o.user)
 				      .WithMany(u=>u.Orders)            
@@ -116,7 +116,7 @@ namespace e_commerce_system.Context
 				entity.ToTable(t => t.HasCheckConstraint(
 					"CK_Cart_Status",
 					"[Status] IN (N'Active',N'Cancelled',N'Converted',N'Abandoned')"
-					)).Property(t=>t.Status).HasDefaultValue("Active");
+					)).Property(t=>t.Status).HasDefaultValue(CartStatus.Active);
 
 			});
 			builder.Entity<OrderItem>(entity =>
@@ -149,9 +149,9 @@ namespace e_commerce_system.Context
 				.HasIndex(o => new { o.CartId, o.ProductId })
 				.IsUnique();
 
-				entity.HasOne(o => o.cart)
+				entity.HasOne(i => i.cart)
 				.WithMany(c=>c.Items)
-				.HasForeignKey(o => o.CartId)
+				.HasForeignKey(i => i.CartId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 				entity.HasOne(o => o.product)
