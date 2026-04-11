@@ -49,6 +49,9 @@ namespace e_commerce_system.Context
 				.HasMaxLength(100)
 				.IsRequired();
 
+				entity.Property(u=>u.City)
+				.HasMaxLength (100).IsRequired();
+
 				entity.Property(u => u.UserName)
 				.HasMaxLength(100)
 
