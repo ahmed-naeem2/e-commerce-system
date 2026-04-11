@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using e_commerce_system.Models.Request;
+using Microsoft.AspNetCore.Identity;
 
 namespace e_commerce_system.Models.Identity
 {
@@ -13,6 +14,16 @@ namespace e_commerce_system.Models.Identity
 
 	public	ICollection<Order> Orders { get; set; } = new List<Order>();
 	public	ICollection<Cart>Carts { get; set; }=new List<Cart>();	
+		public User() { }
+		public User(RegistrationReq req,string userName)
+		{
+			PersonName = req.name;
+				Address = req.Address;
+			City = req.city;
+			Email = req.email;
+			PhoneNumber = req.PhoneNumber;
+			UserName = userName;
+		}
 
 	}
 }

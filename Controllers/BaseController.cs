@@ -8,7 +8,7 @@ namespace e_commerce_system.Controllers
 	{
 
 
-		public ApiResponse<T> SuccessResponse<T>(T Data)
+		protected ApiResponse<T> SuccessResponse<T>(T Data)
 		{
 
 			return new ApiResponse<T>
@@ -19,7 +19,7 @@ namespace e_commerce_system.Controllers
 			};
 		}
 
-		public ApiResponse<object> ErrorResponse(string message, string code)
+		protected ApiResponse<object> ErrorResponse(string message, string code)
 		{
 
 			return new ApiResponse<object>
@@ -30,7 +30,7 @@ namespace e_commerce_system.Controllers
 		}
 
 
-		public IActionResult CustomBadRequest()
+		protected IActionResult CustomBadRequest()
 		{
 
 			var Errors = ModelState.Values
