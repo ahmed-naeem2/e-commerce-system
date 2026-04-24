@@ -3,10 +3,12 @@ using e_commerce_system.Enum;
 using e_commerce_system.IServices;
 using e_commerce_system.Models.Identity;
 using e_commerce_system.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens.Experimental;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnectio
 
 builder.Services.AddScoped<IUserService,UserService>(); 
 builder.Services.AddScoped<IAuthService,AuthService>(); 
+builder.Services.AddScoped<IJwtService,JwtService>();
 builder.Services.AddIdentity<User, Role>(options =>
 {
 
@@ -35,6 +38,29 @@ builder.Services.AddIdentity<User, Role>(options =>
 })
     .AddEntityFrameworkStores<MainAppDbContet>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(option =>
+{
+    option.TokenValidationParameters = new TokenValidationParameters()
+    {
+
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidateAudience = true,
+        ValidAudience= builder.Configuration["Jwt:Audience"],
+
+        ValidateLifetime = true,
+		ValidateIssuerSigningKey = true,
+		IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["jwt:Key"]))
+	};
+
+
+});
+
     
 var app = builder.Build();
 using (var Scope = app.Services.CreateScope())
@@ -68,7 +94,7 @@ static async Task SeedRoles(RoleManager<Role> role)
 
         if (!await role.RoleExistsAsync(NormalizeRole))
         {
-            role.CreateAsync(new Role { Name = NormalizeRole });
+          await  role.CreateAsync(new Role { Name = NormalizeRole });
 
         }
     }

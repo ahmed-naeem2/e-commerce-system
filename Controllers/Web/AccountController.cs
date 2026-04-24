@@ -33,7 +33,8 @@ namespace e_commerce_system.Controllers.Web
 			if (!ModelState.IsValid)
 
 				return CustomBadRequest();
-			if(req.name.IsNullOrEmpty())
+
+			if(string .IsNullOrEmpty(req.name))
 			{
 				return BadRequest(ErrorResponse("Name can not be empty ", StatusCodes.Status400BadRequest.ToString()));
 			}
@@ -52,7 +53,7 @@ namespace e_commerce_system.Controllers.Web
 
 				return BadRequest(ErrorResponse("Phone Number already Used ", StatusCodes.Status400BadRequest.ToString()));
 
-			var UserName = _authService.GenerateUserName(req.name);
+			var UserName = await _authService.GenerateUserNameAsync(req.name);
 
 
 			var user = new User(req, UserName.ToString());
@@ -75,6 +76,19 @@ namespace e_commerce_system.Controllers.Web
 		await	_authService.AddRoleToUserAsync(user, UserRole.User.ToString());//add role to user 
 
 			return Ok(SuccessResponse<string>("Registration successful"));
+
+
+
+		}
+
+
+		[HttpPost]
+
+		public async Task <IActionResult>Login (LoginRequest req)
+		{
+			if (!ModelState.IsValid)
+
+				return CustomBadRequest();
 
 
 

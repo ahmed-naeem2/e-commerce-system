@@ -14,6 +14,7 @@ namespace e_commerce_system.Models.Identity
 
 	public	ICollection<Order> Orders { get; set; } = new List<Order>();
 	public	ICollection<Cart>Carts { get; set; }=new List<Cart>();	
+		public ICollection<RefreshToken> refreshTokens { get; set; }=new List<RefreshToken>();	
 		public User() { }
 		public User(RegistrationReq req,string userName)
 		{

@@ -101,6 +101,13 @@ namespace e_commerce_system.Context
 				.HasForeignKey(i=>i.OrderId)
 				.OnDelete(DeleteBehavior.Cascade);
 			});
+			builder.Entity<RefreshToken>(r =>
+			{
+				r.HasOne(o=>o.User)
+				.WithMany(u=>u.refreshTokens)
+				.HasForeignKey(o=>o.UserId)
+				.OnDelete(DeleteBehavior.Cascade);
+			});
 			builder.Entity<Cart>(entity =>
 			{
 				entity.HasKey(c => c.ID);

@@ -25,7 +25,7 @@ namespace e_commerce_system.Services
 			return await _userService.CheckIsPhoneNumberExistAsync(phoneNumber);
 		}
 
-		public async Task<string> GenerateUserName(string UserName)
+		public async Task<string> GenerateUserNameAsync(string UserName)
 		{
 			var NormalizeName = UserName.Replace(" ", "");
 			string name;
@@ -44,7 +44,10 @@ namespace e_commerce_system.Services
 
 		public async Task AddRoleToUserAsync(User user, string role) => await _userManager.AddToRoleAsync(user, role);
 
-
+		public async Task <bool>IsEmail(string email)
+		{
+			return email.Contains("@")?true : false;
+		}
 	
 		
 			}
