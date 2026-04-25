@@ -1,6 +1,7 @@
 ﻿using e_commerce_system.Context;
 using e_commerce_system.Enum;
 using e_commerce_system.IServices;
+using e_commerce_system.Models;
 using e_commerce_system.Models.Identity;
 using e_commerce_system.Models.Request;
 using e_commerce_system.Models.Response;
@@ -16,12 +17,19 @@ namespace e_commerce_system.Controllers.Web
 	{
 		private readonly MainAppDbContet _context;
 		private readonly IAuthService _authService;
+		private readonly IUserService _userService;
+		private readonly IJwtService _jwtService;
+		
 		
 
-		public AccountController(MainAppDbContet context,IAuthService authService)
+		public AccountController(MainAppDbContet context,IAuthService authService,IUserService userService,IJwtService jwtService)
 		{
 			_context = context;
 			_authService = authService;
+
+			_userService = userService;
+			_jwtService = jwtService;
+			
 		}
 
 
@@ -90,8 +98,34 @@ namespace e_commerce_system.Controllers.Web
 
 				return CustomBadRequest();
 
+			var user = await _userService.FindUserAsync(req.identifier);
 
+			if (user != null)
+			{
+				if (await _authService.Vaildatecredentials(user, req.Password))
+				{
+					if (_authService.IsEmail(req.identifier))
+					{
+
+
+					}
+					else
+					{
+
+					}
+
+				var authenticationResponse =await _authService.LoginResponseAsync(user);
+
+					return Ok(SuccessResponse<AuthenticationResponse>(authenticationResponse));
+
+
+				}
+
+			}
+
+			return NotFound(ErrorResponse("Invalid credentials", StatusCodes.Status404NotFound.ToString()));
+			}
 
 		}
 	}
-}
+

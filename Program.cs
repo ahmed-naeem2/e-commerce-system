@@ -24,9 +24,10 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnectio
 
 );
 
-builder.Services.AddScoped<IUserService,UserService>(); 
+builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService,AuthService>(); 
-builder.Services.AddScoped<IJwtService,JwtService>();
+
 builder.Services.AddIdentity<User, Role>(options =>
 {
 

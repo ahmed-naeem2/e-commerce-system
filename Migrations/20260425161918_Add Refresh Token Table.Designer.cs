@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_commerce_system.Context;
 
@@ -11,9 +12,11 @@ using e_commerce_system.Context;
 namespace e_commerce_system.Migrations
 {
     [DbContext(typeof(MainAppDbContet))]
-    partial class MainAppDbContetModelSnapshot : ModelSnapshot
+    [Migration("20260425161918_Add Refresh Token Table")]
+    partial class AddRefreshTokenTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

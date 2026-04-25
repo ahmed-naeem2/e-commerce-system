@@ -9,6 +9,8 @@ namespace e_commerce_system.IServices
 		Task <User?>FindUserByEmailAsync(string email);
 
 		Task<bool>CheckIsPhoneNumberExistAsync (string phoneNumber);
-		Task<bool>IsUserNameTaken(string userName);
+		Task<bool>IsUserNameTakenAsync(string userName);
+		Task<User?> FindUserAsync(string EmailOrPhoneNumber); //the value may be Email or Phone Number 
+		Task<string> GetRoleAsync(User user);
 	}
 }

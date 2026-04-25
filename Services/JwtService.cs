@@ -19,7 +19,7 @@ namespace e_commerce_system.Services
 			_configuration = configuration;
 		}
 
-		public AuthenticationResponse GenrateJWt(User user)
+		public AuthenticationResponse GenrateJWt(User user,string role)
 		{
 			DateTime Expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:Expiration_Minutes"]));
 
@@ -31,6 +31,7 @@ new Claim(JwtRegisteredClaimNames.Iat,DateTime.UtcNow.ToString()),
 
 				new Claim(ClaimTypes.NameIdentifier,user.Email.ToString()),
 new Claim(ClaimTypes.Name,user.PersonName.ToString()),
+new Claim(ClaimTypes.Role,role)
 
 
 

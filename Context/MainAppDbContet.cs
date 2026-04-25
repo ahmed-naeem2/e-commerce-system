@@ -12,7 +12,7 @@ namespace e_commerce_system.Context
 	public 	DbSet<Product> Products { get; set; }
 
 		public DbSet<Order>Orders {  get; set; }
-
+		public DbSet<RefreshToken>RefreshTokens {  get; set; }
 	
 
 		public DbSet<Cart> Carts { get; set; }
@@ -101,9 +101,19 @@ namespace e_commerce_system.Context
 				.HasForeignKey(i=>i.OrderId)
 				.OnDelete(DeleteBehavior.Cascade);
 			});
-			builder.Entity<RefreshToken>(r =>
+			
+			builder.Entity<RefreshToken>(entity =>
 			{
-				r.HasOne(o=>o.User)
+				entity.HasKey(r => r.ID);
+
+				entity.Property(r => r.Expiration)
+				.IsRequired();
+
+				entity.Property(r => r.Token)
+				.IsRequired()
+				.HasMaxLength(150);
+
+				entity.HasOne(o=>o.User)
 				.WithMany(u=>u.refreshTokens)
 				.HasForeignKey(o=>o.UserId)
 				.OnDelete(DeleteBehavior.Cascade);

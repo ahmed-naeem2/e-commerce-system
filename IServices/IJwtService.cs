@@ -5,6 +5,6 @@ namespace e_commerce_system.IServices
 {
 	public interface  IJwtService
 	{
-		public AuthenticationResponse GenrateJWt(User user);
+		public AuthenticationResponse GenrateJWt(User user,string role);
 	}
 }

@@ -12,12 +12,11 @@ namespace e_commerce_system.IServices
 		Task<string> GenerateUserNameAsync(string UserName);
 		Task<IdentityResult> CreatUserAsync(User user, string Password);
 
-		Task AddRoleToUserAsync(User user, string role);	
-		Task<bool>IsEmail(string email);
+		Task AddRoleToUserAsync(User user, string role);
+		bool IsEmail(string identifier);
+		Task<bool> Vaildatecredentials(User user, string identifier);
 
-		Task<bool> Vaildatecredentials(bool IsEmail,string identifi)
-
-
+		Task<AuthenticationResponse> LoginResponseAsync(User user);
 
 	}
 }
