@@ -21,7 +21,7 @@ namespace e_commerce_system.Services
 
 		public AuthenticationResponse GenrateJWt(User user,string role)
 		{
-			DateTime Expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:Expiration_Minutes"]));
+			DateTime Expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:EXPIRATION_MINUTES"]));
 
 			Claim[] claims = new Claim[] {
 				new Claim(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
@@ -30,13 +30,13 @@ new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),//JWt Uniqe ID
 new Claim(JwtRegisteredClaimNames.Iat,DateTime.UtcNow.ToString()),
 
 				new Claim(ClaimTypes.NameIdentifier,user.Email.ToString()),
-new Claim(ClaimTypes.Name,user.PersonName.ToString()),
+new Claim(ClaimTypes.Name,user.PersonName),
 new Claim(ClaimTypes.Role,role)
 
 
 
 			};
-			SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"]));
+			SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
 			SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 			JwtSecurityToken TokenGenrator = new JwtSecurityToken(

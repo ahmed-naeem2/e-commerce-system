@@ -97,12 +97,13 @@ namespace e_commerce_system.Controllers.Web
 			if (!ModelState.IsValid)
 
 				return CustomBadRequest();
+			var normalizeIdentifier = req.identifier.TrimEnd().TrimStart();
 
-			var user = await _userService.FindUserAsync(req.identifier);
+			var user = await _userService.FindUserAsync(normalizeIdentifier);
 
 			if (user != null)
 			{
-				if (await _authService.Vaildatecredentials(user, req.Password))
+				if (await _authService.VaildatecredentialsAsync(user, req.Password))
 				{
 					if (_authService.IsEmail(req.identifier))
 					{

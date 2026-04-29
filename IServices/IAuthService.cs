@@ -14,7 +14,7 @@ namespace e_commerce_system.IServices
 
 		Task AddRoleToUserAsync(User user, string role);
 		bool IsEmail(string identifier);
-		Task<bool> Vaildatecredentials(User user, string identifier);
+		Task<bool> VaildatecredentialsAsync(User user, string identifier);
 
 		Task<AuthenticationResponse> LoginResponseAsync(User user);
 

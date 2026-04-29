@@ -56,7 +56,7 @@ namespace e_commerce_system.Services
 
 	
 			
-		public async Task<bool> Vaildatecredentials(User user, string password)
+		public async Task<bool> VaildatecredentialsAsync(User user, string password)
 		{
 			
 			return await _userManager.CheckPasswordAsync(user, password);
@@ -73,7 +73,22 @@ public		bool IsEmail(string identifier)
 	public async	Task<AuthenticationResponse> LoginResponseAsync(User user)
 		{
 			var role = await _userService.GetRoleAsync(user);
+
 			var authenticationRespone = _jwtService.GenrateJWt(user, role);
+			var storedRerfreshToken=await _userService.GetRefreshTokenAsync(user); //if the user has refresh token in DB rplace it with new one 
+
+			if (storedRerfreshToken != null)
+			{
+				storedRerfreshToken.Token = authenticationRespone.RefreshToken;
+				storedRerfreshToken.Expiration=authenticationRespone.RefreshTokenExpiration;
+				
+				_context.RefreshTokens.Update(storedRerfreshToken);
+
+				await _context.SaveChangesAsync();	
+
+				return authenticationRespone;
+			}
+
 			RefreshToken refreshToken = new RefreshToken(
 				authenticationRespone.RefreshToken,
 				authenticationRespone.RefreshTokenExpiration,
@@ -81,8 +96,10 @@ public		bool IsEmail(string identifier)
 
 				);
 			_context.RefreshTokens.Add(refreshToken);
-			await _context.SaveChangesAsync();
-
+			
+				await _context.SaveChangesAsync();
+			
+			
 
 			return authenticationRespone;
 		}

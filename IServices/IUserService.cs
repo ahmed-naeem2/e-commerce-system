@@ -1,4 +1,5 @@
-﻿using e_commerce_system.Models.Identity;
+﻿using e_commerce_system.Models;
+using e_commerce_system.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace e_commerce_system.IServices
@@ -12,5 +13,7 @@ namespace e_commerce_system.IServices
 		Task<bool>IsUserNameTakenAsync(string userName);
 		Task<User?> FindUserAsync(string EmailOrPhoneNumber); //the value may be Email or Phone Number 
 		Task<string> GetRoleAsync(User user);
+
+		Task<RefreshToken> GetRefreshTokenAsync(User user);
 	}
 }
