@@ -1,4 +1,7 @@
-﻿namespace e_commerce_system.Models
+﻿using e_commerce_system.Models.DTO;
+using Microsoft.Identity.Client;
+
+namespace e_commerce_system.Models
 {
 	public class Product
 	{
@@ -16,7 +19,7 @@
 
 		public bool IsActive { get; set; } = true;
 
-		public DateTime UpdatedAt { get; set; }
+		public DateTime UpdatedAt { get; set; }=DateTime.Now;
 
 		public decimal Price { get; set; }
 
@@ -24,6 +27,20 @@
 
 
 
+		public Product() { }
 
+		public Product(String name, string description, decimal price,Guid categorieId)
+		{
+			Name=name.Trim().ToLower();
+			Description=description.Trim().ToLower();
+			Price=price;
+			CategorieId=categorieId;
+
+			
+		}
+		public static Product FromProductInputDTO(ProductInputDTO inputDTO,Guid categorieId)
+		{
+			return new Product(inputDTO.Name,inputDTO.Description,inputDTO.Price,categorieId);
+		}
 	}
 }

@@ -222,8 +222,10 @@ namespace e_commerce_system.Context
 
 				entity.Property(c=>c.Name)
 				.HasMaxLength(100)
-				.IsRequired();
-
+				.IsRequired()
+				;
+				entity.HasIndex(c => c.Name)
+				.IsUnique();
 				
 
 			});

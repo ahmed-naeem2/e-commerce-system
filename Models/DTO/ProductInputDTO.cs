@@ -13,6 +13,7 @@ namespace e_commerce_system.Models.DTO
 		public string Description { get; set; }
 
 		[Required]
+		
 		public string CategorieName { get; set; }
 
 		[Required]
