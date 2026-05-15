@@ -16,9 +16,9 @@
 
 		public DateTime CreatedAt { get; set; }= DateTime.Now;
 
-		public double UnitPrice { get; set; }
+		public decimal UnitPrice { get; set; }
 
-		public double LineTotal { get; set; }
+		public decimal LineTotal { get; set; }
 
 
 

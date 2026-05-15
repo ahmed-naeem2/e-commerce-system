@@ -10,11 +10,11 @@ namespace e_commerce_system.Models
 
 		public string OrderNumber {  get; set; }
 
-		public double TotalAmount { get; set; }
+		public decimal TotalAmount { get; set; }
 
-		public double SubTotal {  get; set; }
+		public decimal SubTotal {  get; set; }
 
-		public double ShippingAmount { get; set; }
+		public decimal ShippingAmount { get; set; }
 
 		public string PaymentMethod { get; set; }
 

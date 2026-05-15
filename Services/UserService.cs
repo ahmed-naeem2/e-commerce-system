@@ -20,16 +20,8 @@ namespace e_commerce_system.Services
 		}
 
 	public  async Task<bool> CheckIsEmailExistAsync(string email) => await _userManager.Users.AnyAsync(u => u.Email.ToLower() == email);
-
-		
-
 public async Task<User?> FindUserByEmailAsync(string email)=>   await _userManager.FindByEmailAsync(email);
-
-
-
-
-
-		public async	Task<bool> CheckIsPhoneNumberExistAsync(string phoneNumber)
+	public async	Task<bool> CheckIsPhoneNumberExistAsync(string phoneNumber)
 		{
 			return await _userManager.Users.AnyAsync(u=>u.PhoneNumber==phoneNumber);
 		}

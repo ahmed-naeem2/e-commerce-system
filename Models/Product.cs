@@ -18,7 +18,7 @@
 
 		public DateTime UpdatedAt { get; set; }
 
-		public double Price { get; set; }
+		public decimal Price { get; set; }
 
 		public  ICollection<ProductImage> Images { get; set; }=new List<ProductImage>();
 

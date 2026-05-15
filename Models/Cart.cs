@@ -9,7 +9,7 @@ namespace e_commerce_system.Models
 		public Guid ID { get; set; }
 
 
-		public double TotalAmount { get; set; }
+		public decimal TotalAmount { get; set; }
 
 		public Guid UserId { get; set; }
 		public User? user	{ get; set; }
