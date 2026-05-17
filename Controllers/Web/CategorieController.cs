@@ -5,6 +5,7 @@ using e_commerce_system.Models.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection;
 
 namespace e_commerce_system.Controllers.Web
 {
@@ -30,17 +31,20 @@ namespace e_commerce_system.Controllers.Web
 
 					return CustomBadRequest();
 
-			var normailzeName =categorieInput.Name.TrimStart().TrimEnd().ToLower();
+			Categorie?Newcategorie=Categorie.FromCategorieInputDTO(categorieInput);
 
-			var IsCategorieExis = await _categorieService.CategoryExistsAsync(normailzeName);
+			var IsCategorieExis = await _categorieService.CategoryExistsAsync(Newcategorie.Name);
 
 			if (!IsCategorieExis)
 			{
-				var Categorie = new Categorie(normailzeName);
+				
 
-				_categorieService.AddCategorie(Categorie);
+				_categorieService.AddCategorie(Newcategorie);
 			await	_categorieService.SaveChangeAsync();
 
+				CategorieOutputDTO? categorieOutput = CategorieOutputDTO.FromCategorie(Newcategorie);
+
+				return Ok(SuccessResponse(categorieOutput));
 				
 				
 			}

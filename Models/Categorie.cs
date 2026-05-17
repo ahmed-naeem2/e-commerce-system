@@ -1,4 +1,6 @@
-﻿namespace e_commerce_system.Models
+﻿using e_commerce_system.Models.DTO;
+
+namespace e_commerce_system.Models
 {
 	public class Categorie
 	{
@@ -10,10 +12,16 @@
 
 		public Categorie() { }
 
-		public Categorie(string name)
+		public Categorie(CategorieInputDTO categorieInputDTO)
 		{
 
-			Name=name;
+			Name=categorieInputDTO.Name.Trim().ToLower();
+		}
+
+		public static Categorie FromCategorieInputDTO(CategorieInputDTO categorieInputDTO)
+		{
+
+			return new Categorie(categorieInputDTO);
 		}
 	}
 }
