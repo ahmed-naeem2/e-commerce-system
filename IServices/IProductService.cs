@@ -8,8 +8,11 @@ namespace e_commerce_system.IServices
 
 		void AddProduct(Product product);
 		Task SaveChangeAsync();
-		Task<Product?> GetProductByIdAsync(Guid Id);
+		Task<Product?> GetProductByIdAsync(Guid Id,CancellationToken token);
 		Task<int> GetProductImageCountAsync(Guid Id);
+
+		void AddProductImage(ProductImage image);
+		
 
 	}
 }

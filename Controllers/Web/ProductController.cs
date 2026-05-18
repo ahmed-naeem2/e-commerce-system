@@ -45,7 +45,7 @@ namespace e_commerce_system.Controllers.Web
 			var Categorie = await _categoryService.GetCategorieByNameAsync(NormailzeCategorieName);
 			if (Categorie is null)
 			{
-				return BadRequest(ErrorResponse("The Categorie with that name doesn't exist", StatusCodes.Status404NotFound.ToString()));
+				return NotFound(ErrorResponse("The Categorie with that name doesn't exist", StatusCodes.Status404NotFound.ToString()));
 
 			}
 			Product? NewProduct =Product.FromProductInputDTO(productInput,Categorie.ID);
@@ -60,7 +60,7 @@ namespace e_commerce_system.Controllers.Web
 			}
 			
 
-			ProductOutputDTO? ProductOutput=ProductOutputDTO.FromProduct(NewProduct,Categorie.Name);
+			ProductOutputDTO? ProductOutput=ProductOutputDTO.FromProduct(NewProduct);
 			_productService.AddProduct(NewProduct);
 			await _productService.SaveChangeAsync();
 
@@ -75,12 +75,12 @@ namespace e_commerce_system.Controllers.Web
 
 		[HttpPost("{Id}/UploadImageToProduct")]
 
-		public async Task<IActionResult>UploadImageToProduct(IFormFile image,Guid Id)//add image to specific product 
+		public async Task<IActionResult>UploadImageToProduct(IFormFile image,Guid Id,CancellationToken token)//add image to specific product 
 		{
 			if(image==null|| image.Length==0)
 				return BadRequest(ErrorResponse("No File Uploaded ",StatusCodes.Status400BadRequest.ToString()));
 
-			var Product=await _productService.GetProductByIdAsync(Id);
+			var Product=await _productService.GetProductByIdAsync(Id,token);
 
 			var imagecount =await _productService.GetProductImageCountAsync(Id);
 
@@ -111,8 +111,9 @@ namespace e_commerce_system.Controllers.Web
 		var FileImagePath =await 	_fileImageService.SaveImageAsync(image);//upload imag to wwwroot folder 
 
 			var productImage=new ProductImage(Product.ID,FileImagePath);
-			_mainAppDbContext.ProductImages.Add(productImage);
-			await _mainAppDbContext.SaveChangesAsync();
+			_productService.AddProductImage(productImage);
+
+			await _productService.SaveChangeAsync();
 
 			return Ok(SuccessResponse(FileImagePath));
 			
@@ -120,6 +121,28 @@ namespace e_commerce_system.Controllers.Web
 
 			
 		}
+
+
+		[HttpGet("{id}/Product")]
+
+		public async Task<IActionResult> GetProductById(Guid id,CancellationToken token)
+		{
+			if (id == Guid.Empty)
+			
+				return BadRequest(ErrorResponse("Invaild product Id ", StatusCodes.Status400BadRequest.ToString()));
+			
+			var StoreProduct = await _productService.GetProductByIdAsync(id,token);
+
+			if (StoreProduct is null)
+
+				return NotFound(ErrorResponse($"Product with Id {id} not found .", StatusCodes.Status404NotFound.ToString()));
+
+			var productOutDTO = ProductOutputDTO.FromProduct(StoreProduct);
+
+			return Ok(SuccessResponse(productOutDTO));
+
+		}
+
 
 	}
 }

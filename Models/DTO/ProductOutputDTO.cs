@@ -19,19 +19,19 @@ namespace e_commerce_system.Models.DTO
 
 		public ProductOutputDTO() { }
 
-		public ProductOutputDTO(Product product,string categorieName)
+		public ProductOutputDTO(Product product)
 		{
 			Name=product.Name;
 			Description=product.Description;
 			Price=product.Price;
-			CategorieName=categorieName;
+			CategorieName=product.Categorie.Name;//error
 
-			Images=product.Images.Select(i=>i.ImagePath).ToList();
+			Images=product.Images?.Select(i=>i.ImagePath).ToList()??new List<string>();
 		}
 
-		public static ProductOutputDTO FromProduct(Product product,string CategorieName)
+		public static ProductOutputDTO FromProduct(Product product)
 		{
-			return new ProductOutputDTO(product, CategorieName);
+			return new ProductOutputDTO(product);
 		}
 	}
 }
