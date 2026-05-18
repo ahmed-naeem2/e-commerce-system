@@ -16,10 +16,23 @@ namespace e_commerce_system.Services
 		}
 
 		public void AddProduct(Product product) => _mainAppDbContet.Products.Add(product);
-		public async Task<bool> CheckExistProudctAsync(string name)=> await _mainAppDbContet.Products.AnyAsync(p => p.Name == name);
+		public async Task<bool> CheckExistProudctAsync(string name)=> await _mainAppDbContet.Products.AnyAsync(p => p.Name.ToLower() == name.ToLower());
+
+		public async Task<Product?> GetProductByIdAsync(Guid Id)
+		{
+			return await _mainAppDbContet.Products
+				.FirstOrDefaultAsync(P=>P.ID==Id);
+		}
+
 		public async Task SaveChangeAsync()=> await _mainAppDbContet.SaveChangesAsync();
 
+		
 
+	public async	Task<int> GetProductImageCountAsync(Guid Id)=>await _mainAppDbContet.ProductImages.CountAsync(I=>I.ProductId==Id);	
+		
+			
+		
 
+	
 	}
 }

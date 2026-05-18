@@ -27,7 +27,9 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnectio
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService,AuthService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategorieService, CategorieService>();
+builder.Services.AddScoped<IFileImageService, FIleServiceImage>();
 
 builder.Services.AddIdentity<User, Role>(options =>
 {

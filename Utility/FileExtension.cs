@@ -2,5 +2,6 @@
 {
 	public class FileExtension
 	{
+		public static string[] FileExtentions = new[] { ".jpg", ".jpeg", ".png" };
 	}
 }

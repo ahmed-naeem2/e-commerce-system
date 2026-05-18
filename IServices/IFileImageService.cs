@@ -1,6 +1,8 @@
 ﻿namespace e_commerce_system.IServices
 {
-	public class IFileImageService
+	public interface IFileImageService
 	{
+		Task <string> SaveImageAsync (IFormFile filePath);
+
 	}
 }

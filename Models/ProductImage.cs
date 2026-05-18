@@ -10,6 +10,13 @@
 
 		public Product? product { get; set; }
 
+		public ProductImage() { }
 
+		public ProductImage(Guid productid, string imagePath)
+		{
+			ProductId=productid;
+			ImagePath=imagePath;
+
+		}
 	}
 }

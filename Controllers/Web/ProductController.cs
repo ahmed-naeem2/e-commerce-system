@@ -2,13 +2,15 @@
 using e_commerce_system.IServices;
 using e_commerce_system.Models;
 using e_commerce_system.Models.DTO;
+using e_commerce_system.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace e_commerce_system.Controllers.Web
 {
-	[Route("api/web/[controller]/[action]")]
+	[Route("api/web/[controller]")]
 	[ApiController]
 	public class ProductController : BaseController
 	{
@@ -16,19 +18,22 @@ namespace e_commerce_system.Controllers.Web
 
 		private readonly IProductService _productService;
 		private readonly ICategorieService _categoryService;
-
-		public ProductController(MainAppDbContet mainAppDbContet,IProductService productService,ICategorieService categorieService) { 
+		private readonly IFileImageService _fileImageService;
+		private readonly MainAppDbContet _mainAppDbContext;
+		public ProductController(MainAppDbContet mainAppDbContet,IProductService productService,ICategorieService categorieService,IFileImageService fileImageService,MainAppDbContet mainAppDbContet1) { 
 		
 			_productService= productService;
 			_categoryService= categorieService;
+			_fileImageService= fileImageService;
+			_mainAppDbContext= mainAppDbContet1;
 		
 		}
 
 
-		[HttpPost]
+		[HttpPost("Addproduct")]
 
 
-		public async Task<IActionResult> AddProduct(ProductInputDTO productInput)
+		public async Task<IActionResult> AddProduct(ProductInputDTO productInput)//add product to without image 
 		{
 			if (!ModelState.IsValid)
 			
@@ -66,6 +71,54 @@ namespace e_commerce_system.Controllers.Web
 
 
 
+		}
+
+		[HttpPost("{Id}/UploadImageToProduct")]
+
+		public async Task<IActionResult>UploadImageToProduct(IFormFile image,Guid Id)//add image to specific product 
+		{
+			if(image==null|| image.Length==0)
+				return BadRequest(ErrorResponse("No File Uploaded ",StatusCodes.Status400BadRequest.ToString()));
+
+			var Product=await _productService.GetProductByIdAsync(Id);
+
+			var imagecount =await _productService.GetProductImageCountAsync(Id);
+
+			if (imagecount > 3)
+			{
+
+				return BadRequest(ErrorResponse("Maximum 3 images allowed for each product.", StatusCodes.Status400BadRequest.ToString()));
+			}
+			if (Product is null) {
+
+				return BadRequest(ErrorResponse("the product not exist ", StatusCodes.Status404NotFound.ToString()));
+			}
+
+
+			var extion=Path.GetExtension(image.FileName).ToLower();
+
+			if(image.Length> 2 * 1024 * 1024)
+			{
+				ModelState.AddModelError("", "Max size is 2MB");
+				return CustomBadRequest();
+			}
+			if (!FileExtension.FileExtentions.Contains(extion))
+			{
+				return BadRequest(ErrorResponse("Invaild image type ", StatusCodes.Status400BadRequest.ToString()));
+
+			}
+
+		var FileImagePath =await 	_fileImageService.SaveImageAsync(image);//upload imag to wwwroot folder 
+
+			var productImage=new ProductImage(Product.ID,FileImagePath);
+			_mainAppDbContext.ProductImages.Add(productImage);
+			await _mainAppDbContext.SaveChangesAsync();
+
+			return Ok(SuccessResponse(FileImagePath));
+			
+
+
+			
 		}
 
 	}
