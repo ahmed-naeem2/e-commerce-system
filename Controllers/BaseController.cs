@@ -25,7 +25,7 @@ namespace e_commerce_system.Controllers
 			return new ApiResponse<object>
 			{
 				IsSuccess = false,
-				errors = [  new Error { Message = message, StatusCode = code } ]
+				errors = [new Error { Message = message, StatusCode = code }]
 			};
 		}
 

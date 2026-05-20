@@ -1,4 +1,5 @@
 ﻿using e_commerce_system.Models;
+using e_commerce_system.Models.DTO;
 
 namespace e_commerce_system.IServices
 {
@@ -12,7 +13,8 @@ namespace e_commerce_system.IServices
 		Task<int> GetProductImageCountAsync(Guid Id);
 
 		void AddProductImage(ProductImage image);
-		
+		void UpdateProduct (Product product);
+		void CheckUpdateDTO(Product product, ProductUpdateDTO productUpdateDTO);
 
 	}
 }

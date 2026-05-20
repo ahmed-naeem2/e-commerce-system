@@ -1,6 +1,7 @@
 ﻿using e_commerce_system.Context;
 using e_commerce_system.IServices;
 using e_commerce_system.Models;
+using e_commerce_system.Models.DTO;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,6 +40,30 @@ namespace e_commerce_system.Services
 
 		}
 
+		public void UpdateProduct(Product product)
+		{
+			_mainAppDbContet.Products.Update(product);
+		}
+		//this fuction will save and check the updateDTO
+		public void CheckUpdateDTO(Product StoredProduct, ProductUpdateDTO productUpdateDTO)
+		{
+			if (!string.IsNullOrEmpty(productUpdateDTO.Name))
+			{
+				StoredProduct.Name = productUpdateDTO.Name;
+			}
+			if (!string.IsNullOrEmpty(productUpdateDTO.Description))
+			{
+				StoredProduct.Description = productUpdateDTO.Description;
+			}
+			if (productUpdateDTO.Price .HasValue)
+			{
+				StoredProduct.Price = productUpdateDTO.Price.Value;
+			}
+			
+
+			
+
+		}
 
 	}
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Specialized;
 
 namespace e_commerce_system.Controllers.Web
 {
@@ -73,7 +74,7 @@ namespace e_commerce_system.Controllers.Web
 
 		}
 
-		[HttpPost("{Id}/UploadImageToProduct")]
+		[HttpPost("UploadImageToProduct/{Id}")]
 
 		public async Task<IActionResult>UploadImageToProduct(IFormFile image,Guid Id,CancellationToken token)//add image to specific product 
 		{
@@ -114,8 +115,9 @@ namespace e_commerce_system.Controllers.Web
 			_productService.AddProductImage(productImage);
 
 			await _productService.SaveChangeAsync();
+			ProductOutputDTO productOutputDTO = ProductOutputDTO.FromProduct(Product);
 
-			return Ok(SuccessResponse(FileImagePath));
+			return CreatedAtAction(nameof(GetProductById), new {id=Product.ID},productOutputDTO);
 			
 
 
@@ -123,8 +125,9 @@ namespace e_commerce_system.Controllers.Web
 		}
 
 
-		[HttpGet("{id}/Product")]
-
+		[HttpGet("Product/{id}")]
+		
+		//retrive Product Detials By Id 
 		public async Task<IActionResult> GetProductById(Guid id,CancellationToken token)
 		{
 			if (id == Guid.Empty)
@@ -140,6 +143,41 @@ namespace e_commerce_system.Controllers.Web
 			var productOutDTO = ProductOutputDTO.FromProduct(StoreProduct);
 
 			return Ok(SuccessResponse(productOutDTO));
+
+		}
+
+
+		[HttpPut("UpdateProduct/{id}")]
+
+		public async Task< IActionResult>UpdateProduct(Guid id,ProductUpdateDTO productUpdateDTO,CancellationToken token)
+		{
+			if (id == Guid.Empty)
+
+				return BadRequest(ErrorResponse("the Id can not be Empty ", StatusCodes.Status400BadRequest.ToString()));
+
+			var StoredProduct =await  _productService.GetProductByIdAsync(id,token);
+
+			if(StoredProduct is null)
+
+					return NotFound(ErrorResponse($"Product with this id {id} not found ",StatusCodes.Status404NotFound.ToString()));
+			if (!string.IsNullOrEmpty(productUpdateDTO.CategorieName))
+			{
+				var StoredCategorie = await _categoryService.GetCategorieByNameAsync(productUpdateDTO.CategorieName);
+
+				if (StoredCategorie is null)
+					return NotFound(ErrorResponse($"Category '{productUpdateDTO.CategorieName}' does not exist.", StatusCodes.Status404NotFound.ToString()));
+				StoredProduct.CategorieId=StoredCategorie.ID;
+			}
+			StoredProduct.IsActive=productUpdateDTO.IsActive;
+		 _productService.CheckUpdateDTO(StoredProduct,productUpdateDTO);
+
+			_productService.UpdateProduct(StoredProduct);
+			await _productService.SaveChangeAsync();
+
+			var ProductOutPut = ProductOutputDTO.FromProduct(StoredProduct);
+
+			return Ok(SuccessResponse(ProductOutPut));
+
 
 		}
 
