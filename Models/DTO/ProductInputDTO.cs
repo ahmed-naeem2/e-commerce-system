@@ -17,6 +17,7 @@ namespace e_commerce_system.Models.DTO
 		public string CategorieName { get; set; }
 
 		[Required]
+		[Range(0,double.MaxValue,ErrorMessage = "Price must be greater than or equal to 0. ")]
 		public decimal Price { get; set; }
 
 	

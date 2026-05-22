@@ -155,7 +155,7 @@ namespace e_commerce_system.Controllers.Web
 
 				return BadRequest(ErrorResponse("the Id can not be Empty ", StatusCodes.Status400BadRequest.ToString()));
 
-			var StoredProduct =await  _productService.GetProductByIdAsync(id,token);
+			var StoredProduct =await  _productService.GetProductByIdAsync(id,token);//this fucntion return object of product with Categorie and Images 
 
 			if(StoredProduct is null)
 

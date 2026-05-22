@@ -55,7 +55,7 @@ namespace e_commerce_system.Services
 			{
 				StoredProduct.Description = productUpdateDTO.Description;
 			}
-			if (productUpdateDTO.Price .HasValue)
+			if (productUpdateDTO.Price .HasValue||productUpdateDTO.Price!=0)
 			{
 				StoredProduct.Price = productUpdateDTO.Price.Value;
 			}
