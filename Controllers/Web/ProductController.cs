@@ -183,6 +183,32 @@ namespace e_commerce_system.Controllers.Web
 
 
 		}
+		[HttpDelete("Product/{id}")]
+
+		public async Task<IActionResult> DeletProduct(Guid id, CancellationToken token)
+		{
+			if (id == Guid.Empty)
+				return BadRequest(ErrorResponse("Id can't be empty ", StatusCodes.Status400BadRequest.ToString()));
+
+			var StoredProduct = await _productService.GetProductByIdAsync(id, token);
+			if (StoredProduct is null)
+
+				return NotFound(ErrorResponse($"Product with this Id {id} Not Found", StatusCodes.Status404NotFound.ToString()));
+
+			foreach (var image in StoredProduct.Images)
+			{
+
+				FIleServiceImage.DeleteImagePath(image.ImagePath);
+
+			}
+
+
+			_productService.RemoveProduct(StoredProduct);
+			await _productService.SaveChangeAsync();
+
+			return Ok(SuccessResponse("the Product Deleted successfully "));
+
+		}
 
 		[HttpDelete("DeletImageProduct/{id}")]
 
