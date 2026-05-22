@@ -32,7 +32,7 @@ namespace e_commerce_system.Services
 
 		
 
-	public async	Task<int> GetProductImageCountAsync(Guid Id)=>await _mainAppDbContet.ProductImages.CountAsync(I=>I.ProductId==Id);
+	
 
 	public	void AddProductImage(ProductImage image)
 		{
@@ -47,23 +47,28 @@ namespace e_commerce_system.Services
 		//this fuction will save and check the updateDTO
 		public void CheckUpdateDTO(Product StoredProduct, ProductUpdateDTO productUpdateDTO)
 		{
-			if (!string.IsNullOrEmpty(productUpdateDTO.Name))
+			if (!string.IsNullOrWhiteSpace(productUpdateDTO.Name))
 			{
-				StoredProduct.Name = productUpdateDTO.Name;
+				StoredProduct.Name = productUpdateDTO.Name.Trim();
 			}
-			if (!string.IsNullOrEmpty(productUpdateDTO.Description))
+
+			if (!string.IsNullOrWhiteSpace(productUpdateDTO.Description))
 			{
-				StoredProduct.Description = productUpdateDTO.Description;
+				StoredProduct.Description = productUpdateDTO.Description.Trim();
 			}
-			if (productUpdateDTO.Price .HasValue||productUpdateDTO.Price!=0)
+
+			if (productUpdateDTO.Price.HasValue && productUpdateDTO.Price.Value > 0)
 			{
 				StoredProduct.Price = productUpdateDTO.Price.Value;
 			}
-			
 
-			
+
 
 		}
 
+		
+		
+			
+		
 	}
 }

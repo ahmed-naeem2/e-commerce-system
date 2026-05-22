@@ -30,6 +30,7 @@ builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategorieService, CategorieService>();
 builder.Services.AddScoped<IFileImageService, FIleServiceImage>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddIdentity<User, Role>(options =>
 {

@@ -234,7 +234,7 @@ namespace e_commerce_system.Context
 				entity.HasKey(P=>P.Id);
 
 				entity.Property(p =>p.ImagePath)
-				.HasMaxLength(100)
+				.HasMaxLength(255)
 				.IsRequired();
 
 

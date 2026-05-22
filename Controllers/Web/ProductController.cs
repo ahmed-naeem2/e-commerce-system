@@ -2,6 +2,7 @@
 using e_commerce_system.IServices;
 using e_commerce_system.Models;
 using e_commerce_system.Models.DTO;
+using e_commerce_system.Services;
 using e_commerce_system.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -21,12 +22,14 @@ namespace e_commerce_system.Controllers.Web
 		private readonly ICategorieService _categoryService;
 		private readonly IFileImageService _fileImageService;
 		private readonly MainAppDbContet _mainAppDbContext;
-		public ProductController(MainAppDbContet mainAppDbContet,IProductService productService,ICategorieService categorieService,IFileImageService fileImageService,MainAppDbContet mainAppDbContet1) { 
+		private readonly IImageService _imageService;
+		public ProductController(MainAppDbContet mainAppDbContet,IProductService productService,ICategorieService categorieService,IFileImageService fileImageService,MainAppDbContet mainAppDbContet1,IImageService imageService) { 
 		
 			_productService= productService;
 			_categoryService= categorieService;
 			_fileImageService= fileImageService;
 			_mainAppDbContext= mainAppDbContet1;
+			_imageService= imageService;
 		
 		}
 
@@ -83,9 +86,9 @@ namespace e_commerce_system.Controllers.Web
 
 			var Product=await _productService.GetProductByIdAsync(Id,token);
 
-			var imagecount =await _productService.GetProductImageCountAsync(Id);
+			var imagecount =await _imageService.GetProductImageCountAsync(Id);
 
-			if (imagecount > 3)
+			if (imagecount >= 3)
 			{
 
 				return BadRequest(ErrorResponse("Maximum 3 images allowed for each product.", StatusCodes.Status400BadRequest.ToString()));
@@ -112,12 +115,12 @@ namespace e_commerce_system.Controllers.Web
 		var FileImagePath =await 	_fileImageService.SaveImageAsync(image);//upload imag to wwwroot folder 
 
 			var productImage=new ProductImage(Product.ID,FileImagePath);
-			_productService.AddProductImage(productImage);
+			_imageService.AddProductImage(productImage);
 
-			await _productService.SaveChangeAsync();
+			await _imageService.SaveChangeAsync();
 			ProductOutputDTO productOutputDTO = ProductOutputDTO.FromProduct(Product);
 
-			return CreatedAtAction(nameof(GetProductById), new {id=Product.ID},productOutputDTO);
+			return Ok(SuccessResponse(productOutputDTO));
 			
 
 
@@ -181,6 +184,29 @@ namespace e_commerce_system.Controllers.Web
 
 		}
 
+		[HttpDelete("DeletImageProduct/{id}")]
+
+		public async Task <IActionResult>DeleteImageProduct(Guid id)
+		{
+			if (id == Guid.Empty)
+				return BadRequest(ErrorResponse("the Id can't be empty", StatusCodes.Status404NotFound.ToString()));
+
+			var StoredProductImage=await _imageService.GetProductImagebyIdAsync(id);
+
+			if(StoredProductImage is null)
+
+					return NotFound(ErrorResponse($"the with this Id {id} not found ",StatusCodes.Status404NotFound.ToString()));
+
+			FIleServiceImage.DeleteImagePath(StoredProductImage.ImagePath);//here delete the image from wwwroot folder 
+
+			_imageService.DeleteProductImage(StoredProductImage);
+
+			await _imageService.SaveChangeAsync();
+
+			return Ok(SuccessResponse("Image Deleted Successfully"));
+
+
+		}
 
 	}
 }

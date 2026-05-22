@@ -10,11 +10,9 @@ namespace e_commerce_system.IServices
 		void AddProduct(Product product);
 		Task SaveChangeAsync();
 		Task<Product?> GetProductByIdAsync(Guid Id,CancellationToken token);
-		Task<int> GetProductImageCountAsync(Guid Id);
-
-		void AddProductImage(ProductImage image);
 		void UpdateProduct (Product product);
 		void CheckUpdateDTO(Product product, ProductUpdateDTO productUpdateDTO);
+		
 
 	}
 }
