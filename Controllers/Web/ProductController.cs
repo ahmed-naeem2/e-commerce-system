@@ -36,7 +36,14 @@ namespace e_commerce_system.Controllers.Web
 
 		[HttpPost("Addproduct")]
 
+		[HttpGet("Products")]
 
+		public async Task<IActionResult>GetProductsPage(string SortBy ,string Search,string FilterByCategorieName, int PageNumber = 0)
+		{
+
+
+
+		}
 		public async Task<IActionResult> AddProduct(ProductInputDTO productInput)//add product to without image 
 		{
 			if (!ModelState.IsValid)

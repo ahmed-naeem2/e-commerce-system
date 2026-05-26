@@ -66,7 +66,7 @@ namespace e_commerce_system.Services
 
 		}
 
-		
+		public void RemoveProduct(Product product) => _mainAppDbContet.Products.Remove(product);
 		
 			
 		

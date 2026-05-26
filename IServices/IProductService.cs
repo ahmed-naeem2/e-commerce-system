@@ -12,6 +12,8 @@ namespace e_commerce_system.IServices
 		Task<Product?> GetProductByIdAsync(Guid Id,CancellationToken token);
 		void UpdateProduct (Product product);
 		void CheckUpdateDTO(Product product, ProductUpdateDTO productUpdateDTO);
+
+		void RemoveProduct(Product product);
 		
 
 	}
