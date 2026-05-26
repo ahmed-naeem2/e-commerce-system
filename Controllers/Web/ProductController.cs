@@ -2,6 +2,7 @@
 using e_commerce_system.IServices;
 using e_commerce_system.Models;
 using e_commerce_system.Models.DTO;
+using e_commerce_system.QueryFilter;
 using e_commerce_system.Services;
 using e_commerce_system.Utility;
 using Microsoft.AspNetCore.Authentication;
@@ -23,13 +24,15 @@ namespace e_commerce_system.Controllers.Web
 		private readonly IFileImageService _fileImageService;
 		private readonly MainAppDbContet _mainAppDbContext;
 		private readonly IImageService _imageService;
-		public ProductController(MainAppDbContet mainAppDbContet,IProductService productService,ICategorieService categorieService,IFileImageService fileImageService,MainAppDbContet mainAppDbContet1,IImageService imageService) { 
+		private readonly PaginationService _paginationService;
+		public ProductController(MainAppDbContet mainAppDbContet,IProductService productService,ICategorieService categorieService,IFileImageService fileImageService,MainAppDbContet mainAppDbContet1,IImageService imageService,PaginationService paginationService) { 
 		
 			_productService= productService;
 			_categoryService= categorieService;
 			_fileImageService= fileImageService;
 			_mainAppDbContext= mainAppDbContet1;
 			_imageService= imageService;
+			_paginationService= paginationService;
 		
 		}
 
@@ -38,9 +41,11 @@ namespace e_commerce_system.Controllers.Web
 
 		[HttpGet("Products")]
 
-		public async Task<IActionResult>GetProductsPage(string SortBy ,string Search,string FilterByCategorieName, int PageNumber = 0)
+		public async Task<IActionResult> GetProductsPage([AsParameters]ProductQueryFilter productQueryFilter,CancellationToken cancellationToken)
 		{
+			var product=await _paginationService.GetAllProduct(productQueryFilter,cancellationToken);
 
+			return Ok(SuccessResponse(product));
 
 
 		}
