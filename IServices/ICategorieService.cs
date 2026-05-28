@@ -13,5 +13,7 @@ namespace e_commerce_system.IServices
 		void UpdateCategory(Categorie categorie);
 
 		void DeleteCategorie (Categorie categorie);
+
+		Task<List<Categorie>> GetAllCategories(CancellationToken token);
 	}
 }

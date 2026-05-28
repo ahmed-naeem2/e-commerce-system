@@ -29,7 +29,7 @@ namespace e_commerce_system.Services
 
 			query = query.ApplaySearch(filter.Search);
 
-			var totalRecord = await query.CountAsync(token);
+			
 
 			query = query.ApplaySort(string.IsNullOrEmpty( filter.SortBy)?"Name":filter.SortBy) ;
 
@@ -39,6 +39,8 @@ namespace e_commerce_system.Services
 
 				query = query.ApplayFilterByCategorie(Categorie.ID);
 					}
+
+			var totalRecord = await query.CountAsync(token);
 
 			var products = await query
 				.ApplayPagination(pageNumber, pageSize)

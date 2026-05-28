@@ -45,7 +45,9 @@ public async 		Task<Categorie?> GetCategorieByIdAsync(Guid id)=> await _mainAppD
 
 public 		void DeleteCategorie(Categorie categorie) => _mainAppDbContet.Categories.Remove(categorie);
 
-
-
+	public	async Task<List<Categorie>> GetAllCategories(CancellationToken token)
+		{
+			return await _mainAppDbContet.Categories.ToListAsync(token);
+		}
 	}
 }

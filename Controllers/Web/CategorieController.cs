@@ -24,6 +24,22 @@ namespace e_commerce_system.Controllers.Web
 		}
 
 
+		[HttpGet("GetAllCategory")]
+
+		public async Task<IActionResult> GetAllCategory(CancellationToken token)
+		{
+			var Categories = await _categorieService.GetAllCategories(token);
+
+			
+
+			List<CategorieOutputDTO>CategorieOutput=Categories.Select(CategorieOutputDTO.FromCategorie).ToList();
+
+
+			return Ok(SuccessResponse(CategorieOutput));
+
+		}
+
+
 		[HttpPost]
 
 		public async Task<IActionResult> AddCategorie(CategorieInputDTO categorieInput)
@@ -109,5 +125,7 @@ namespace e_commerce_system.Controllers.Web
 			return Ok(SuccessResponse("Category deleted Successfuly"));
 
 		}
+
+
 	}
 }

@@ -44,6 +44,9 @@ namespace e_commerce_system.Controllers.Web
 		public async Task<IActionResult> GetProductsPage([FromQuery]ProductQueryFilter productQueryFilter,CancellationToken cancellationToken)
 		{
 			var product=await _paginationService.GetAllProduct(productQueryFilter,cancellationToken);
+			if (product.Data == null)
+
+				return NotFound(ErrorResponse("there is not  data yet ", StatusCodes.Status404NotFound.ToString()));
 
 			return Ok(SuccessResponse(product));
 
