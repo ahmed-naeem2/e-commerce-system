@@ -1,5 +1,6 @@
 ﻿using e_commerce_system.Context;
 using e_commerce_system.ExtensionMethods;
+using e_commerce_system.IServices;
 using e_commerce_system.Models.DTO;
 using e_commerce_system.Models.Response;
 using e_commerce_system.QueryFilter;
@@ -10,9 +11,9 @@ namespace e_commerce_system.Services
 	public class PaginationService
 	{
 		private readonly MainAppDbContet _mainAppDbContet;
-		private readonly CategorieService _categorieService;
+		private readonly ICategorieService _categorieService;
 
-		public PaginationService(MainAppDbContet mainAppDbContet, CategorieService categorieService)
+		public PaginationService(MainAppDbContet mainAppDbContet, ICategorieService categorieService)
 		{
 			_mainAppDbContet = mainAppDbContet;
 			_categorieService = categorieService;
@@ -41,6 +42,8 @@ namespace e_commerce_system.Services
 
 			var products = await query
 				.ApplayPagination(pageNumber, pageSize)
+				.Include(p=>p.Images)
+				.Include(P=>P.Categorie)
 				.Select(p=>ProductOutputDTO.FromProduct(p))
 				.ToListAsync(token);
 
