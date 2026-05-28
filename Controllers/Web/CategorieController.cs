@@ -89,5 +89,25 @@ namespace e_commerce_system.Controllers.Web
 
 
 		}
+
+		[HttpDelete("DeleteCategory/{id}")]
+
+		public async Task<IActionResult>DeleteCategory(Guid id)
+		{
+			if (id == Guid.Empty)
+				return BadRequest(ErrorResponse("Category Id can't be Empty ", StatusCodes.Status400BadRequest.ToString()));
+
+			var StoredCategory = await _categorieService.GetCategorieByIdAsync(id);
+
+			if (StoredCategory is null) 
+
+					return NotFound(ErrorResponse($"Category with this id {id} Not Found ",StatusCodes.Status404NotFound.ToString()));
+
+			_categorieService.DeleteCategorie(StoredCategory);
+			await _categorieService.SaveChangeAsync();
+
+			return Ok(SuccessResponse("Category deleted Successfuly"));
+
+		}
 	}
 }

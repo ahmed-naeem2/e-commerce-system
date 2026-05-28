@@ -11,5 +11,7 @@ namespace e_commerce_system.IServices
 
 		Task<Categorie?> GetCategorieByIdAsync(Guid id);
 		void UpdateCategory(Categorie categorie);
+
+		void DeleteCategorie (Categorie categorie);
 	}
 }
