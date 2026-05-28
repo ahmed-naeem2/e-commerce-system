@@ -8,5 +8,8 @@ namespace e_commerce_system.IServices
 		Task <Categorie?> GetCategorieByNameAsync(string name);
 		 void AddCategorie (Categorie categorie);
 		Task SaveChangeAsync ();
+
+		Task<Categorie?> GetCategorieByIdAsync(Guid id);
+		void UpdateCategory(Categorie categorie);
 	}
 }

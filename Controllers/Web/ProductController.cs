@@ -39,7 +39,7 @@ namespace e_commerce_system.Controllers.Web
 
 		
 
-		[HttpGet("Products")]
+		[HttpGet("Products/List")]
 
 		public async Task<IActionResult> GetProductsPage([FromQuery]ProductQueryFilter productQueryFilter,CancellationToken cancellationToken)
 		{
@@ -165,7 +165,7 @@ namespace e_commerce_system.Controllers.Web
 
 		[HttpPut("UpdateProduct/{id}")]
 
-		public async Task< IActionResult>UpdateProduct(Guid id,ProductUpdateDTO productUpdateDTO,CancellationToken token)
+		public async Task< IActionResult>UpdateProduct(Guid id,[ FromBody]ProductUpdateDTO productUpdateDTO,CancellationToken token)
 		{
 			if (id == Guid.Empty)
 
@@ -196,7 +196,7 @@ namespace e_commerce_system.Controllers.Web
 
 
 		}
-		[HttpDelete("Product/{id}")]
+		//[HttpDelete("Product/{id}")]
 
 		//public async Task<IActionResult> DeletProduct(Guid id, CancellationToken token)
 		//{

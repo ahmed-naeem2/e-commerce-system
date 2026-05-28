@@ -37,5 +37,13 @@ namespace e_commerce_system.Services
 			return await _mainAppDbContet.Categories
 				.FirstOrDefaultAsync(C => C.Name == name);
 		}
+
+public async 		Task<Categorie?> GetCategorieByIdAsync(Guid id)=> await _mainAppDbContet.Categories.FindAsync(id);
+
+	public	void UpdateCategory(Categorie categorie)
+		{
+			_mainAppDbContet.Categories.Update(categorie);
+
+		}
 	}
 }

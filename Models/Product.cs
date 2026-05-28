@@ -29,18 +29,18 @@ namespace e_commerce_system.Models
 
 		public Product() { }
 
-		public Product(String name, string description, decimal price,Guid categorieId)
+		public Product(ProductInputDTO productInputDTO,Guid categorieId)
 		{
-			Name=name.Trim().ToLower();
-			Description=description.Trim().ToLower();
-			Price=price;
+			Name= productInputDTO.Name.Trim().ToLower();
+			Description= productInputDTO.Description.Trim().ToLower();
+			Price= productInputDTO.Price;
 			CategorieId=categorieId;
 
 			
 		}
 		public static Product FromProductInputDTO(ProductInputDTO inputDTO,Guid categorieId)
 		{
-			return new Product(inputDTO.Name,inputDTO.Description,inputDTO.Price,categorieId);
+			return new Product(inputDTO, categorieId);
 		}
 	}
 }
