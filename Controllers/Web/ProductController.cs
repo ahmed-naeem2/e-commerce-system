@@ -39,7 +39,7 @@ namespace e_commerce_system.Controllers.Web
 
 		
 
-		[HttpGet("Products/List")]
+		[HttpGet("List")]
 
 		public async Task<IActionResult> GetProductsPage([FromQuery]ProductQueryFilter productQueryFilter,CancellationToken cancellationToken)
 		{
@@ -60,14 +60,18 @@ namespace e_commerce_system.Controllers.Web
 
 				return CustomBadRequest();
 
-			var NormailzeCategorieName=productInput.CategorieName.Trim().ToLower();
+			var NormailzeCategorieName=productInput.CategorieName?.Trim().ToLower();
 
-			var Categorie = await _categoryService.GetCategorieByNameAsync(NormailzeCategorieName);
-			if (Categorie is null)
-			{
-				return NotFound(ErrorResponse("The Categorie with that name doesn't exist", StatusCodes.Status404NotFound.ToString()));
+			
+				var Categorie = await _categoryService.GetCategorieByNameAsync(NormailzeCategorieName);
 
-			}
+
+				if (Categorie is null)
+				{
+					return NotFound(ErrorResponse("The Categorie with that name doesn't exist", StatusCodes.Status404NotFound.ToString()));
+
+				}
+			
 			Product? NewProduct =Product.FromProductInputDTO(productInput,Categorie.ID);
 			
 
@@ -80,13 +84,13 @@ namespace e_commerce_system.Controllers.Web
 			}
 			
 
-			ProductOutputDTO? ProductOutput=ProductOutputDTO.FromProduct(NewProduct);
 			_productService.AddProduct(NewProduct);
 			await _productService.SaveChangeAsync();
+			var productoutput = ProductOutputDTO.FromProduct(NewProduct);
+			productoutput.CategorieName=NormailzeCategorieName;
 
 
-
-			return Ok(SuccessResponse(ProductOutput));
+			return CreatedAtAction(nameof(GetProductById),new {id=NewProduct.ID},productoutput);
 
 
 
@@ -144,10 +148,10 @@ namespace e_commerce_system.Controllers.Web
 		}
 
 
-		[HttpGet("Product/{id}")]
+		[HttpGet("{id}")]
 		
 		//retrive Product Detials By Id 
-		public async Task<IActionResult> GetProductById(Guid id,CancellationToken token)
+		public async Task<IActionResult> GetProductById([FromRoute]Guid id,CancellationToken token)
 		{
 			if (id == Guid.Empty)
 			

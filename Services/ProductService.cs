@@ -34,11 +34,7 @@ namespace e_commerce_system.Services
 
 	
 
-	public	void AddProductImage(ProductImage image)
-		{
-			_mainAppDbContet.ProductImages.Add(image);
 
-		}
 
 		public void UpdateProduct(Product product)
 		{

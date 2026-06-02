@@ -24,7 +24,7 @@ namespace e_commerce_system.Models.DTO
 			Name=product.Name;
 			Description=product.Description;
 			Price=product.Price;
-			CategorieName=product.Categorie.Name;//error
+			CategorieName=product.Categorie?.Name??string.Empty;//error
 
 			Images=product.Images?.Select(i=>i.ImagePath).ToList()??new List<string>();
 		}

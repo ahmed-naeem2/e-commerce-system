@@ -32,7 +32,9 @@ namespace e_commerce_system.Controllers.Web
 
 			
 
-			List<CategorieOutputDTO>CategorieOutput=Categories.Select(CategorieOutputDTO.FromCategorie).ToList();
+			List<CategorieOutputDTO>CategorieOutput=Categories
+				.Select(CategorieOutputDTO.FromCategorie)
+				.ToList();
 
 
 			return Ok(SuccessResponse(CategorieOutput));
