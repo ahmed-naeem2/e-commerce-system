@@ -20,7 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MainAppDbContet>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"))
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 
 );
 
@@ -32,6 +32,7 @@ builder.Services.AddScoped<PaginationService>();
 builder.Services.AddScoped<ICategorieService, CategorieService>();
 builder.Services.AddScoped<IFileImageService, FIleServiceImage>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<ICartService, CartService>(); 
 
 
 builder.Services.AddIdentity<User, Role>(options =>

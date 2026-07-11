@@ -11,7 +11,7 @@ namespace e_commerce_system.Models
 
 		public decimal TotalAmount { get; set; }
 
-		public Guid UserId { get; set; }
+		public Guid? UserId { get; set; }
 		public User? user	{ get; set; }
 
 		public CartStatus Status { get; set; } = CartStatus.Active;
@@ -19,6 +19,7 @@ namespace e_commerce_system.Models
 		public string? SessionId { get; set; }
 
 		public DateTime UpdatedAt { get; set; }
+		public DateTime CreatedAt { get; set; }=DateTime.UtcNow;
 
 		public ICollection<CartItem>Items { get; set; }=new List<CartItem>();
 

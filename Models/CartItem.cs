@@ -15,6 +15,7 @@
 		public Cart? cart { get; set; }
 
 		public int Quantity { get; set; } = 1;
+		public DateTime UpdatedAt { get; set; } 
 
 		public DateTime CreatedAt { get; set; } = DateTime.Now;
 

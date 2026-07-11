@@ -60,10 +60,10 @@ namespace e_commerce_system.Controllers.Web
 
 				return CustomBadRequest();
 
-			var NormailzeCategorieName=productInput.CategorieName?.Trim().ToLower();
+			string ? NormailzeCategorieName=productInput.CategorieName?.Trim().ToLower();
 
 			
-				var Categorie = await _categoryService.GetCategorieByNameAsync(NormailzeCategorieName);
+var Categorie = await _categoryService.GetCategorieByNameAsync(NormailzeCategorieName);
 
 
 				if (Categorie is null)
@@ -132,7 +132,7 @@ namespace e_commerce_system.Controllers.Web
 
 			}
 
-		var FileImagePath =await 	_fileImageService.SaveImageAsync(image);//upload imag to wwwroot folder 
+		var FileImagePath =await 	_fileImageService.SaveImageAsync(image);//upload image to wwwroot folder 
 
 			var productImage=new ProductImage(Product.ID,FileImagePath);
 			_imageService.AddProductImage(productImage);
