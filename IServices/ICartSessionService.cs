@@ -5,6 +5,7 @@ namespace e_commerce_system.IServices
     {
         string GetOrCreateSessionId();
         void ClearSessionId();
+    }
         
 
     }

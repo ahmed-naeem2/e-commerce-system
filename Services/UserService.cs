@@ -1,4 +1,5 @@
-﻿using e_commerce_system.Context;
+﻿using System.Security.Claims;
+using e_commerce_system.Context;
 using e_commerce_system.IServices;
 using e_commerce_system.Models;
 using e_commerce_system.Models.Identity;
@@ -11,12 +12,14 @@ namespace e_commerce_system.Services
 	{
 
 		private readonly UserManager<User> _userManager;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly MainAppDbContet _context;
 	
-		public UserService(UserManager<User> userManager,MainAppDbContet context	)
+		public UserService(UserManager<User> userManager,MainAppDbContet context,IHttpContextAccessor httpContextAccessor)	
 		{
 			_userManager = userManager;
 			_context = context;
+			_httpContextAccessor = httpContextAccessor;
 		}
 
 	public  async Task<bool> CheckIsEmailExistAsync(string email) => await _userManager.Users.AnyAsync(u => u.Email.ToLower() == email);
@@ -46,5 +49,19 @@ public async Task<User?> FindUserByEmailAsync(string email)=>   await _userManag
 		{
 		return	await _context.RefreshTokens.Where(x=>x.UserId==user.Id).FirstOrDefaultAsync();
 		}
-	}
+
+        public Guid? GetCurrentUserId()
+        {var context = _httpContextAccessor.HttpContext;
+			if ( context?.User.Identity?.IsAuthenticated == true)
+			{
+				var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+				if ( Guid.TryParse(userIdClaim, out Guid userId))
+				{
+					return userId;
+				}
+			}
+			return null;
+        }
+    }
 }

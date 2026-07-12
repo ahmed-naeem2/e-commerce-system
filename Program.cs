@@ -33,6 +33,8 @@ builder.Services.AddScoped<ICategorieService, CategorieService>();
 builder.Services.AddScoped<IFileImageService, FIleServiceImage>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<ICartService, CartService>(); 
+builder.Services.AddScoped<ICartSessionService, CartSessionService>();
+
 
 
 builder.Services.AddIdentity<User, Role>(options =>

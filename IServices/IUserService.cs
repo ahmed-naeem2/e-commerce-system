@@ -8,6 +8,8 @@ namespace e_commerce_system.IServices
 	{
 		Task<bool> CheckIsEmailExistAsync(string email);
 		Task <User?>FindUserByEmailAsync(string email);
+		Guid? GetCurrentUserId();	
+
 
 		Task<bool>CheckIsPhoneNumberExistAsync (string phoneNumber);
 		Task<bool>IsUserNameTakenAsync(string userName);
