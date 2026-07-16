@@ -7,13 +7,13 @@ namespace e_commerce_system.Services
 	{
 		public static readonly string Root = Path.Combine(
 		Directory.GetCurrentDirectory(),
-		"wwwroot");
+		"wwwroot/Uploads");
 
 		public async Task<string> SaveImageAsync(IFormFile imageFile)
 		{
 			var extion=Path.GetExtension( imageFile.FileName ).ToLower();
 
-			var FileName = "Uploads/Product"+"/" + Guid.NewGuid().ToString() +extion;
+			var FileName =   Guid.NewGuid().ToString() +extion;
 			var FilePath= Path.Combine( Root, FileName );
 
 			if (!Directory.Exists(Root))

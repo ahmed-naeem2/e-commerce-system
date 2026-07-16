@@ -17,6 +17,7 @@ namespace e_commerce_system.Services
         public string GetOrCreateSessionId()
         {
             var context = _httpContextAccessor.HttpContext!;
+
             if(context.Request.Cookies.TryGetValue(SessionKey, out var sessionId))
             
                 return sessionId;
@@ -25,9 +26,9 @@ namespace e_commerce_system.Services
 
             context.Response.Cookies.Append(SessionKey, sessionId, new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddDays(30), // Set the cookie expiration as needed
+                Expires = DateTimeOffset.UtcNow.AddDays(30), 
                 HttpOnly = true,
-                Secure = true, // Set to true if using HTTPS
+                Secure = false,
                 SameSite = SameSiteMode.Lax
             });
 

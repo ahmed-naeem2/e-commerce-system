@@ -95,8 +95,8 @@ namespace e_commerce_system.Services
 		ThenInclude(ci => ci.product)
 		.ThenInclude(p=>p.Images).
 				FirstOrDefaultAsync(c=>c.Status==CartStatus.Active &&
-				userId !=null?c.UserId==userId:
-				c.SessionId==sessionId);
+				(userId !=null?c.UserId==userId:
+				c.SessionId==sessionId));
         
     
 

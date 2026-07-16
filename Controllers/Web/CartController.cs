@@ -48,12 +48,13 @@ public CartController(MainAppDbContet mainAppcontext, ICartService cartService, 
 		public async Task<IActionResult> GetCurrentCart()
 		{
 			Guid? userId = _userService.GetCurrentUserId();	
+			
 			var sessionid=userId==null?_cartSessionService.GetOrCreateSessionId():null;
 
 			var cart=await _cartService.GetCartByUserIdOrSessionIdAsync(userId, sessionid);
 
 			if(cart==null)
-				return NotFound(ErrorResponse("no Item Added in cart yet ",StatusCodes.Status404NotFound.ToString()));
+				return Ok(SuccessResponse("Cart is empty"));
 
 				var cartout=CartOutputDTO.FromCart(cart);
 
