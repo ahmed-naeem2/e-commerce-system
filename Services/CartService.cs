@@ -11,11 +11,13 @@ namespace e_commerce_system.Services
 	{
 		private readonly MainAppDbContet _mainAppDbContext;
 		private readonly ICartSessionService _cartSessionService;
+		private readonly IUserService _userService;
 
-		public CartService(MainAppDbContet mainAppDbContext, ICartSessionService cartSessionService)
+		public CartService(MainAppDbContet mainAppDbContext, ICartSessionService cartSessionService, IUserService userService)
 		{
 			_mainAppDbContext = mainAppDbContext;
 			_cartSessionService = cartSessionService;
+			_userService = userService;
 		}
 
 		public void AddCart(Cart cart)
@@ -90,20 +92,71 @@ namespace e_commerce_system.Services
 			return newCart;
 		}
 
-        public Task<Cart?> GetCartByUserIdOrSessionIdAsync(Guid? userId, string? sessionId)=>_mainAppDbContext.Carts
+        public async Task<Cart?> GetCartByUserIdOrSessionIdAsync(Guid? userId, string? sessionId)=>await _mainAppDbContext.Carts
 		.Include(c => c.Items).
 		ThenInclude(ci => ci.product)
 		.ThenInclude(p=>p.Images).
 				FirstOrDefaultAsync(c=>c.Status==CartStatus.Active &&
 				(userId !=null?c.UserId==userId:
 				c.SessionId==sessionId));
-        
-    
+        public async Task  ClearCartAsync(Guid? userId)
+
+		{
+			
+			var cart=await GetCurrentCart(userId);
+			if(cart==null||!cart.Items.Any())
+				return;
+
+				DeleteCart(cart);
+				await SaveChangesAsync();
+
+
+		}
+
+		public void DeleteCart(Cart cart)
+		{
+			_mainAppDbContext.Carts.Remove(cart);
+			
+
+
+		}
 
         public async Task SaveChangesAsync()
 		{
 			await _mainAppDbContext.SaveChangesAsync();
 		}
 	
+	public async Task<Cart?>GetCurrentCart(Guid?userid)
+		{
+			var sessionid=userId==null? _cartSessionService.GetOrCreateSessionId():null;
+			var cart= await GetCartByUserIdOrSessionIdAsync(userId,sessionid);
+			return cart;
+		}
+
+		public void DeleteCartItem(CartItem cartItem)
+		{
+			_mainAppDbContext.CartItems.Remove(cartItem);
+		}
+		void UpdateCartItem(CartItem cartItem)
+		{
+			_mainAppDbContext.CartItems.Update(cartItem);
+		}
+	public async Task<CartItemOutputDTO?> DeacreaseCartItemQuantityAsync(CartItem cartItem)
+		{
+			if (cartItem.Quantity == 1)
+			{
+				DeleteCartItem(cartItem);
+				await SaveChangesAsync();
+				return null; // Item was removed from the cart
+			}
+				cartItem.Quantity--;
+				updateCartItem(cartItem);
+				await SaveChangesAsync();
+
+				return CartItemOutputDTO.FromCartItem(cartItem); // Return the updated cart item
+
+											
+						
+		}
 	}
 }

@@ -66,8 +66,47 @@ public CartController(MainAppDbContet mainAppcontext, ICartService cartService, 
 
 		}
 
+[HttpDelete("DeleteCart")]
+
+public async Task<IActionResult> DeleteCart()
+		{
+			var currentUserId = _userService.GetCurrentUserId();
+			await _cartService.ClearCartAsync(currentUserId);
+
+			return Ok(SuccessResponse("Cart deleted successfully"));;
+
+	}
+
+	[HttpPatch("DeleteCartItem/{cartItemId}")]
+//it used for decreasing the quantity of a cart item or removing it if the quantity reaches zero
+	public async Task<IActionResult> DecreaeCartItem(Guid cartItemId)
+		{
+			var userid=_userService.GetCurrentUserId();
+			
+			var cart=await _cartService.GetCurrentCart(userid);
+			if(cart==null||!cart.Items.Any())
+			{
+				return Ok(SuccessResponse("Cart is empty"));
+			}
+			var cartItem=cart.Items.FirstOrDefault(ci=>ci.Id==cartItemId);	
+
+			if(cartItem==null)
+			
+				return NotFound(ErrorResponse("Cart item not found"));
+
+				var updatedCartItem = await _cartService.DeacreaseCartItemQuantityAsync(cartItem);
+
+				if(updatedCartItem==null)
+					return Ok(SuccessResponse("Cart item removed from cart"));
 
 
+			
+
+
+
+			return Ok(SuccessResponse(updatedCartItem)	);
+
+		}
 	}
 
 
