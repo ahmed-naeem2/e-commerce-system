@@ -10,8 +10,8 @@ namespace e_commerce_system.IServices
 		void DeleteCartItem(CartItem cartItem);
 		void UpdateCartItem(CartItem cartItem);
 		Task SaveChangesAsync();	
-		Task <CartItemOutputDTO?> DeacreaseCartItemQuantityAsync(CartItem cartItem);
-		Task<cart?> GetCurrentCart(Guid? userId);
+		Task <CartItemOutDTO?> DeacreaseCartItemQuantityAsync(CartItem cartItem);
+		Task<Cart?> GetCurrentCart(Guid? userId);
 		
 	Task 	ClearCartAsync(Guid? userId);
 

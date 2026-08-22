@@ -128,20 +128,20 @@ namespace e_commerce_system.Services
 	
 	public async Task<Cart?>GetCurrentCart(Guid?userid)
 		{
-			var sessionid=userId==null? _cartSessionService.GetOrCreateSessionId():null;
-			var cart= await GetCartByUserIdOrSessionIdAsync(userId,sessionid);
+			var sessionid=userid==null? _cartSessionService.GetOrCreateSessionId():null;
+			var cart= await GetCartByUserIdOrSessionIdAsync(userid,sessionid);
 			return cart;
 		}
 
 		public void DeleteCartItem(CartItem cartItem)
 		{
-			_mainAppDbContext.CartItems.Remove(cartItem);
+			_mainAppDbContext.cartItems.Remove(cartItem);
 		}
-		void UpdateCartItem(CartItem cartItem)
+		public void UpdateCartItem(CartItem cartItem)
 		{
-			_mainAppDbContext.CartItems.Update(cartItem);
+			_mainAppDbContext.cartItems.Update(cartItem);
 		}
-	public async Task<CartItemOutputDTO?> DeacreaseCartItemQuantityAsync(CartItem cartItem)
+	public async Task<CartItemOutDTO?> DeacreaseCartItemQuantityAsync(CartItem cartItem)
 		{
 			if (cartItem.Quantity == 1)
 			{
@@ -150,10 +150,10 @@ namespace e_commerce_system.Services
 				return null; // Item was removed from the cart
 			}
 				cartItem.Quantity--;
-				updateCartItem(cartItem);
+				UpdateCartItem(cartItem);
 				await SaveChangesAsync();
 
-				return CartItemOutputDTO.FromCartItem(cartItem); // Return the updated cart item
+				return CartItemOutDTO.FromCartItem(cartItem); // Return the updated cart item
 
 											
 						

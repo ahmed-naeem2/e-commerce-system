@@ -77,9 +77,9 @@ public async Task<IActionResult> DeleteCart()
 
 	}
 
-	[HttpPatch("DeleteCartItem/{cartItemId}")]
+	[HttpPatch("DecreaseCartItem/{cartItemId}")]
 //it used for decreasing the quantity of a cart item or removing it if the quantity reaches zero
-	public async Task<IActionResult> DecreaeCartItem(Guid cartItemId)
+	public async Task<IActionResult> DecreaseCartItem(Guid cartItemId)
 		{
 			var userid=_userService.GetCurrentUserId();
 			
@@ -88,11 +88,11 @@ public async Task<IActionResult> DeleteCart()
 			{
 				return Ok(SuccessResponse("Cart is empty"));
 			}
-			var cartItem=cart.Items.FirstOrDefault(ci=>ci.Id==cartItemId);	
+			var cartItem=cart.Items.FirstOrDefault(ci=>ci.ID==cartItemId);	
 
 			if(cartItem==null)
 			
-				return NotFound(ErrorResponse("Cart item not found"));
+				return NotFound(ErrorResponse("Cart item not found",StatusCodes.Status404NotFound.ToString()));
 
 				var updatedCartItem = await _cartService.DeacreaseCartItemQuantityAsync(cartItem);
 
@@ -106,6 +106,29 @@ public async Task<IActionResult> DeleteCart()
 
 			return Ok(SuccessResponse(updatedCartItem)	);
 
+		}
+
+		[HttpDelete("DeleteCartItem/{cartItemId}")]
+
+		public async Task<IActionResult> DeleteCartItem(Guid cartItemId)
+		{
+			var userid=_userService.GetCurrentUserId();
+			
+			var cart=await _cartService.GetCurrentCart(userid);
+			if(cart==null||!cart.Items.Any())
+			{
+				return Ok(SuccessResponse("Cart is empty"));
+			}
+			var cartItem=cart.Items.FirstOrDefault(ci=>ci.ID==cartItemId);	
+
+			if(cartItem==null)
+			
+				return NotFound(ErrorResponse("Cart item not found",StatusCodes.Status404NotFound.ToString()));
+
+				_cartService.DeleteCartItem(cartItem);
+				await _cartService.SaveChangesAsync();
+
+				return Ok(SuccessResponse("Cart item removed successfully from cart"));
 		}
 	}
 
