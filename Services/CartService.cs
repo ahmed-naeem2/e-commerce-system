@@ -25,10 +25,9 @@ namespace e_commerce_system.Services
 			_mainAppDbContext.Carts.Add(cart);
 		}
 
-        public async Task<CartOutputDTO> AddItemToCart(Guid? userId, AddItemToCartDTO addItemToCartDTO)
+        public async Task<CartOutputDTO> AddItemToCart(Guid? userId, AddItemToCartDTO addItemToCartDTO,Product product)
 		{
 			
-
 				var Sessionid= userId==null?_cartSessionService.GetOrCreateSessionId():null;
 
 				var cart= await GetCartByUserIdOrSessionIdAsync(userId,Sessionid);
@@ -52,7 +51,7 @@ namespace e_commerce_system.Services
 						CreatedAt=DateTime.UtcNow,
 						UpdatedAt=DateTime.UtcNow,
 
-                        UnitPrice = porductId.Price
+                        UnitPrice = product.Price
 						});
 					
 

@@ -36,15 +36,15 @@ public CartController(MainAppDbContet mainAppcontext, ICartService cartService, 
 			if (!ModelState.IsValid)
 				return CustomBadRequest();
 
-							var porductId=_mainAppcontext.Products.FirstOrDefault(p => p.ID == addItemToCartDTO.ProductId);
+							var product=_mainAppcontext.Products.FirstOrDefault(p => p.ID == addItemToCartDTO.ProductId);
 
-							if(porductId==null)
+							if(product==null)
 								return NotFound(ErrorResponse("Product with ID " + addItemToCartDTO.ProductId + " not found.",StatusCodes.Status404NotFound.ToString()));
 
 
 				Guid? userId = _userService.GetCurrentUserId();	
 
-				var cartout=await _cartService.AddItemToCart(userId, addItemToCartDTO);
+				var cartout=await _cartService.AddItemToCart(userId, addItemToCartDTO, product);
 
 			return Ok(SuccessResponse(cartout));;
 		} 

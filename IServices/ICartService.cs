@@ -19,7 +19,7 @@ namespace e_commerce_system.IServices
 		Task<Cart?> GetCartByUserIdOrSessionIdAsync(Guid? userId, string? sessionId);
 		
 
-		Task<CartOutputDTO> AddItemToCart(Guid? userId, AddItemToCartDTO addItemToCartDTO);
+		Task<CartOutputDTO> AddItemToCart(Guid? userId, AddItemToCartDTO addItemToCartDTO,Product product);
 		
 	}
 }
