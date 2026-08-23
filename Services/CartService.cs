@@ -27,10 +27,7 @@ namespace e_commerce_system.Services
 
         public async Task<CartOutputDTO> AddItemToCart(Guid? userId, AddItemToCartDTO addItemToCartDTO)
 		{
-			var porductId=_mainAppDbContext.Products.FirstOrDefault(p => p.ID == addItemToCartDTO.ProductId);
-			if (porductId == null)
 			
-				throw new Exception("Product with ID " + addItemToCartDTO.ProductId + " not found.");
 
 				var Sessionid= userId==null?_cartSessionService.GetOrCreateSessionId():null;
 

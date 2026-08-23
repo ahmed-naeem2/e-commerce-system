@@ -25,14 +25,22 @@ public CartController(MainAppDbContet mainAppcontext, ICartService cartService, 
 			_userService = userService;
 			_cartSessionService = cartSessionService;
 		}
-
+//add an item to the cart for the current user or session
 		[HttpPost("AddItemToCart")]
 
 		public async Task<IActionResult> AddItemToCart([FromBody]AddItemToCartDTO addItemToCartDTO)
 
 		{
+
+
 			if (!ModelState.IsValid)
 				return CustomBadRequest();
+
+							var porductId=_mainAppcontext.Products.FirstOrDefault(p => p.ID == addItemToCartDTO.ProductId);
+
+							if(porductId==null)
+								return NotFound(ErrorResponse("Product with ID " + addItemToCartDTO.ProductId + " not found.",StatusCodes.Status404NotFound.ToString()));
+
 
 				Guid? userId = _userService.GetCurrentUserId();	
 
@@ -41,7 +49,7 @@ public CartController(MainAppDbContet mainAppcontext, ICartService cartService, 
 			return Ok(SuccessResponse(cartout));;
 		} 
 			
-
+//get the current cart for the user or session
 
 		[HttpGet]
 
@@ -65,6 +73,7 @@ public CartController(MainAppDbContet mainAppcontext, ICartService cartService, 
 
 
 		}
+		//delete the entire cart for the current user
 
 [HttpDelete("DeleteCart")]
 
@@ -107,7 +116,7 @@ public async Task<IActionResult> DeleteCart()
 			return Ok(SuccessResponse(updatedCartItem)	);
 
 		}
-
+//delete a specific cart item from the cart
 		[HttpDelete("DeleteCartItem/{cartItemId}")]
 
 		public async Task<IActionResult> DeleteCartItem(Guid cartItemId)
