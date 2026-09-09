@@ -10,5 +10,22 @@ public Guid ProductId { get; set; }
 
         public decimal TotalPrice => Quantity * UnitPrice;        
     
+    public OrderItemOutputDTO()
+        {
+        }
+
+        public OrderItemOutputDTO(OrderItem orderItem)
+        {
+            ProductId = orderItem.ProductId;
+            Quantity = orderItem.Quantity;
+            ProductName = orderItem.product?.Name ?? string.Empty;
+            UnitPrice = orderItem.UnitPrice;
+            imageUrl = orderItem.product?.Images.FirstOrDefault()?.ImagePath ?? string.Empty;
+        }
+
+    static    public OrderItemOutputDTO FromOrderItem(OrderItem orderItem)
+        {
+            return new OrderItemOutputDTO(orderItem);
+        }
     }
 }
