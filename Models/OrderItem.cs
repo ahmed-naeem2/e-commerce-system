@@ -22,7 +22,24 @@
 
 
 
+public OrderItem()
+		{
+		}
 
+		public OrderItem(CartItem cartItem,decimal lineTotal)
+		{
+			ProductId = cartItem.ProductId;
+			Quantity = cartItem.Quantity;
+			UnitPrice = cartItem.UnitPrice;
+			LineTotal = lineTotal;
+			Quantity = cartItem.Quantity;
+		
+		}
+
+		static public OrderItem FromCartItem(CartItem cartItem, decimal lineTotal)
+		{
+			return new OrderItem(cartItem, lineTotal);
+		}
 
 
 	}

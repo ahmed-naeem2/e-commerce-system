@@ -30,6 +30,27 @@ namespace e_commerce_system.Models
 
 		public ICollection<OrderItem> Items { get; set; }=new List<OrderItem>();
 
+		public Order()
+		{
+		}
+
+		public Order(Cart cart)
+		{
+			
+			
+			SubTotal = cart.TotalAmount;
+			ShippingAmount = 5;
+			TotalAmount = cart.TotalAmount+ShippingAmount;
+			PaymentMethod = "Cash on Delivery";
+			UserId = cart.UserId.Value;
+			
+		}
+
+		static public Order FromCart(Cart cart)
+		{
+			return new Order(cart);
+		}
+
 
 
 	}

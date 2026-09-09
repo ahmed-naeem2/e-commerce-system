@@ -4,7 +4,7 @@
 	{
 		Active,
 		Cancelled ,
-		Converted,
-		Abandoned
+		
+		Completed,
 	}
 }

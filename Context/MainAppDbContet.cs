@@ -135,7 +135,7 @@ namespace e_commerce_system.Context
 
 				entity.ToTable(t => t.HasCheckConstraint(
 					"CK_Cart_Status",
-					"[Status] IN (N'Active',N'Cancelled',N'Converted',N'Abandoned')"
+					"[Status] IN (N'Active',N'Cancelled',N'Completed')"
 					)).Property(t=>t.Status).HasDefaultValue(CartStatus.Active);
 
 			});
