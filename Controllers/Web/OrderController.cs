@@ -10,12 +10,14 @@ namespace e_commerce_system.Controllers.Web
     {
         private readonly MainAppDbContet _mainAppDbContext;
         private readonly IUserService   _userService;
+        private readonly IOrderService _orderService;
         
 
-                public OrderController(MainAppDbContet mainAppDbContext, IUserService userService)
+                public OrderController(MainAppDbContet mainAppDbContext, IUserService userService, IOrderService orderService)
         {
             _mainAppDbContext = mainAppDbContext;
             _userService = userService;
+            _orderService = orderService;
         }
 
        [HttpPost("Checkout")] 
@@ -26,10 +28,21 @@ namespace e_commerce_system.Controllers.Web
             
                 return Unauthorized(ErrorResponse("You must be logged in to place an order.",StatusCodes.Status401Unauthorized.ToString()));
 
+                var orderoutputDTO = await _orderService.CheckoutAsync(userId.Value);
+
+                if(orderoutputDTO == null)
+                
+                    return BadRequest(ErrorResponse("Checkout failed. Your cart is empty or an error occurred.",StatusCodes.Status400BadRequest.ToString()));
+
+
+                
 
 
 
-            return Ok(SuccessResponse("Checkout successful."));
+
+
+
+            return Ok(SuccessResponse(orderoutputDTO));
 
         }
     }

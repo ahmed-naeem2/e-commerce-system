@@ -3,6 +3,7 @@ using e_commerce_system.Enum;
 using e_commerce_system.IServices;
 using e_commerce_system.Models.Identity;
 using e_commerce_system.Services;
+using e_commerce_system.Startup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,62 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<MainAppDbContet>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-
-);
-
-builder.Services.AddScoped<IUserService,UserService>();
-builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IAuthService,AuthService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<PaginationService>();
-builder.Services.AddScoped<ICategorieService, CategorieService>();
-builder.Services.AddScoped<IFileImageService, FIleServiceImage>();
-builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<ICartService, CartService>(); 
-builder.Services.AddScoped<ICartSessionService, CartSessionService>();
-
-
-
-builder.Services.AddIdentity<User, Role>(options =>
-{
-
-    options.Password.RequireDigit= true;
-    options.Password.RequireLowercase= false;
-    options.Password.RequireUppercase= false;
-    options.Password.RequiredLength = 5;
-
-})
-    .AddEntityFrameworkStores<MainAppDbContet>()
-    .AddDefaultTokenProviders();
-
-builder.Services.AddAuthentication(option =>
-{
-    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(option =>
-{
-    option.TokenValidationParameters = new TokenValidationParameters()
-    {
-
-        ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidateAudience = true,
-        ValidAudience= builder.Configuration["Jwt:Audience"],
-
-        ValidateLifetime = true,
-		ValidateIssuerSigningKey = true,
-		IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["jwt:Key"]))
-	};
-
-
-});
+builder.Services.AddServices(builder.Configuration);
 
     
 var app = builder.Build();
