@@ -27,9 +27,10 @@ namespace e_commerce_system.Services
 				new Claim(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),//JWt Uniqe ID
 
-new Claim(JwtRegisteredClaimNames.Iat,DateTime.UtcNow.ToString()),
+new Claim(JwtRegisteredClaimNames.Iat,DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
 
-				new Claim(ClaimTypes.NameIdentifier,user.Email.ToString()),
+				new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+				new Claim(ClaimTypes.Email,user.Email),
 new Claim(ClaimTypes.Name,user.PersonName),
 new Claim(ClaimTypes.Role,role)
 

@@ -1,5 +1,6 @@
 using e_commerce_system.Context;
 using e_commerce_system.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace e_commerce_system.Controllers.Web
@@ -19,6 +20,7 @@ namespace e_commerce_system.Controllers.Web
             _userService = userService;
             _orderService = orderService;
         }
+        [Authorize]
 
        [HttpPost("Checkout")] 
        public async Task<IActionResult> Checkout()

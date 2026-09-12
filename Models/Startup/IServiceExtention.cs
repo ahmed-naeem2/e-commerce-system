@@ -1,3 +1,4 @@
+using System.Text;
 using e_commerce_system.Context;
 using e_commerce_system.IServices;
 using e_commerce_system.Models.Identity;
@@ -69,6 +70,7 @@ options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
             services.AddScoped<ICartSessionService, CartSessionService>();
             services.AddScoped<IOrderService, OrderService>();
 
+
 services.AddIdentity<User, Role>(options =>
 {
 
@@ -85,6 +87,7 @@ services.AddAuthentication(option =>
 {
     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(option =>
 {
     option.TokenValidationParameters = new TokenValidationParameters()
@@ -97,9 +100,15 @@ services.AddAuthentication(option =>
 
         ValidateLifetime = true,
 		ValidateIssuerSigningKey = true,
-		IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["jwt:Key"]))
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+
 	};
+
+    
 });
+    services.AddAuthorization();
+
+
 
            
             return services;

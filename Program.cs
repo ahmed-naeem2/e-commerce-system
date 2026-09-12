@@ -34,6 +34,7 @@ using (var Scope = app.Services.CreateScope())
     app.UseSwaggerUI();
 }
 app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

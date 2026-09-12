@@ -56,6 +56,8 @@ namespace e_commerce_system.Services
 					
 
 					}
+					cart.TotalAmount=cart.Items.Sum(i=>i.Quantity*i.UnitPrice);
+					UpdateCart(cart);
 					await SaveChangesAsync();
 
 					var Carout= CartOutputDTO.FromCart(cart);
