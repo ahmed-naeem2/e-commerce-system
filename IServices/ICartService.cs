@@ -6,6 +6,7 @@ namespace e_commerce_system.IServices
 	public interface ICartService
 	{
 		void AddCart(Cart cart);
+		void UpdateCart(Cart cart);
 		void DeleteCart(Cart cart);
 		void DeleteCartItem(CartItem cartItem);
 		void UpdateCartItem(CartItem cartItem);

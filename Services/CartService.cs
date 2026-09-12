@@ -67,7 +67,11 @@ namespace e_commerce_system.Services
 					}
 				
 
-	
+	public void UpdateCart(Cart cart)
+		{
+			
+			_mainAppDbContext.Carts.Update(cart);
+		}
 			
 		
 

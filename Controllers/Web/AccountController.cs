@@ -19,18 +19,22 @@ namespace e_commerce_system.Controllers.Web
 		private readonly IAuthService _authService;
 		private readonly IUserService _userService;
 		private readonly IJwtService _jwtService;
+		private readonly ICartSessionService _cartSessionService;
+		private readonly ICartService _cartService;
+
 		
 		
 		
 
-		public AccountController(MainAppDbContet context,IAuthService authService,IUserService userService,IJwtService jwtService)
+		public AccountController(MainAppDbContet context,IAuthService authService,IUserService userService,IJwtService jwtService, ICartSessionService cartSessionService,ICartService cartService		)
 		{
 			_context = context;
 			_authService = authService;
 
 			_userService = userService;
 			_jwtService = jwtService;
-			
+			_cartSessionService = cartSessionService;
+			_cartService = cartService;
 		}
 
 
@@ -117,6 +121,20 @@ namespace e_commerce_system.Controllers.Web
 					}
 
 				var authenticationResponse =await _authService.LoginResponseAsync(user);
+
+				var sessionId = _cartSessionService.GetOrCreateSessionId();
+				var cart = await _cartService.GetCartByUserIdOrSessionIdAsync(null, sessionId);
+
+				if(cart != null)
+					{
+						
+						
+						cart.UserId = user.Id;
+						cart.SessionId = null;
+						
+						await _cartService.SaveChangesAsync();
+					}
+
 
 
 
