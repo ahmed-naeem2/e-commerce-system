@@ -8,6 +8,7 @@ namespace e_commerce_system.IServices
 		void AddCart(Cart cart);
 		void UpdateCart(Cart cart);
 		void DeleteCart(Cart cart);
+		 Task MergeCartAsync(Guid userId, Cart sessionCart);
 		void DeleteCartItem(CartItem cartItem);
 		void UpdateCartItem(CartItem cartItem);
 		Task SaveChangesAsync();	

@@ -54,6 +54,7 @@ namespace e_commerce_system.Services
         }
 
         public string GenerateOrderNumber(string orderNumber)
+
         {
             
             var random=new Random();
@@ -69,6 +70,12 @@ namespace e_commerce_system.Services
 
             return name;
         }
+
+                    
+            
+
+
+        
 
         public async Task SaveChangesAsync()
         {

@@ -21,7 +21,26 @@
 
 		public decimal UnitPrice { get; set; }
 
-	
+	public CartItem()
+		{
+			
+		}
+
+		public CartItem(CartItem cartItem)
+		{
+			ProductId = cartItem.ProductId;
+			Quantity = cartItem.Quantity;
+			UnitPrice = cartItem.UnitPrice;
+			UpdatedAt = DateTime.UtcNow;
+			CreatedAt = DateTime.UtcNow;
+			
+
+		}
+
+		public static CartItem FromCartItem(CartItem cartItem)
+		{
+			return new CartItem(cartItem);
+		}
 
 	}
 }

@@ -160,5 +160,51 @@ namespace e_commerce_system.Services
 											
 						
 		}
+
+		 public async Task MergeCartAsync(Guid userId, Cart sessionCart)
+        {
+            
+            
+            if (sessionCart == null) 
+            return;
+
+            var userCart = await GetCurrentCart(userId);
+
+            if(userCart == null)
+            {
+                sessionCart.UserId = userId;
+                sessionCart.SessionId = null;
+               await SaveChangesAsync();
+            }
+            else
+            {
+                foreach(var sessionCartItem in sessionCart.Items)
+                {
+                    var existingItem = userCart.Items.FirstOrDefault(i => i.ProductId == sessionCartItem.ProductId);
+                    if(existingItem != null)
+                    {
+                        existingItem.Quantity += sessionCartItem.Quantity;
+                        UpdateCartItem(existingItem);
+                    }
+                    else
+                    {
+                        userCart.Items.Add(CartItem.FromCartItem(sessionCartItem));
+
+                        UpdateCartItem(sessionCartItem);
+                        
+                    }
+                }
+
+			
+
+				DeleteCart(sessionCart);
+
+				await SaveChangesAsync();
+
+                
+                    
+            }
+		}
+			
 	}
 }

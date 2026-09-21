@@ -122,18 +122,11 @@ namespace e_commerce_system.Controllers.Web
 
 				var authenticationResponse =await _authService.LoginResponseAsync(user);
 
-				var sessionId = _cartSessionService.GetOrCreateSessionId();
-				var cart = await _cartService.GetCartByUserIdOrSessionIdAsync(null, sessionId);
+				var sessionCart=await _cartService.GetCurrentCart(null);
 
-				if(cart != null)
-					{
-						
-						
-						cart.UserId = user.Id;
-						cart.SessionId = null;
-						
-						await _cartService.SaveChangesAsync();
-					}
+					await _cartService.MergeCartAsync(user.Id, sessionCart);
+
+					// Clear the session
 
 
 
